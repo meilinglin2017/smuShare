@@ -1,0 +1,44 @@
+body{
+    width: 100%;
+    height:100%;
+    background-image: url('../img/img1.png');
+    background-size: 65%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.top{
+    position: fixed;
+    top: 19%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    align-items: center;
+
+}
+.center{
+    position: relative;
+    top: 355px;
+    left: 712px;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    align-items: center;
+
+}
+
+.button {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    background: none;
+    padding: 13px 18px;
+    border-top: 500px;
+    border-radius: 4px;
+    font-weight: normal;
+    text-transform: uppercase;
+    transition: all 0.2s ease-in-out;
+}
+  
+.glow-button:hover {
+    color: rgba(255, 255, 255, 1);
+    background-color: #00E6E0;
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.8);
+}

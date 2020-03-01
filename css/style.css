@@ -157,7 +157,15 @@ form h2{
 }
 
 .input-div.two{
-    margin-bottom: 4px ;
+    margin-bottom: 2px ;
+}
+
+.input-div.three{
+    margin-bottom: 2px ;
+}
+
+.input-div.four{
+    margin-bottom: 2px ;
 }
 
 .i{
@@ -201,16 +209,17 @@ form h2{
     color: #555;
 }
 
-.forgotpw{
+.link{
     display:block;
     text-align: right;
     text-decoration:none;
     color: #999;
     font-size: 0.9rem;
     transition: .3s;
+    padding-top: 5px;
 }
 
-.forgotpw:hover{
+.link:hover{
     color: #38d39f;
 }
 
@@ -234,7 +243,5 @@ form h2{
 .btn:hover{
     background-position: right;
 }
-
-
 
 

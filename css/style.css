@@ -704,6 +704,18 @@ nav ul li a{
 	}
 }
 
+.word span:nth-child(6).active {
+	animation: balance 1.5s linear;
+}
+
+.word span:nth-child(7).active {
+	animation: shrinkjump 1.5s linear;
+}
+
+.word span:nth-child(8).active {
+	animation: falling 1.5s linear;
+}
+
 .fixed {
 	position: relative;
 	top: 5px;

@@ -1,3 +1,5 @@
+@import 'http://code.ionicframework.com/iconicons/2.0.1/css/ionic.min.css'
+
 body{
     width: 100%;
     height:100%;
@@ -435,3 +437,48 @@ nav ul li a{
     bottom:0;
     z-index:-1;
 }
+
+.content{
+    width: 650px;
+    height: 450px;
+    overflow:scroll;
+    border-top: #d9d9d9 solid 1px;
+    margin-top: 200px;
+    margin-left: 650px;
+    padding: 5px;
+}
+
+
+.card .imgoverlay{
+    filter: brightness(50%);
+}
+
+.card .imgoverlay:hover{
+    filter: none;
+    transition: all 0.5s ease ;
+}
+
+.cardbtn{
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    font-size: 15px;
+    align-items: center;
+    outline: none;
+    border: none;
+    background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+    cursor: pointer;
+    color: #fff;
+    background-size: 200%;
+    transition: .5s;
+    text-transform: uppercase;
+    text-align: center;
+    padding-top: 7px;
+    z-index: 2;
+}
+
+.card-img-overlay:hover .cardbtn{
+    display: block;
+}
+

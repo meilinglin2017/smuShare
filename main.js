@@ -16,3 +16,7 @@ inputs.forEach(input =>{
     input.addEventListener('focus', focusFunc);
     input.addEventListener('blur', blurFunc);
 });
+
+$('.search-button').click(function(){
+    $(this).parent().toggleClass('open');
+  });

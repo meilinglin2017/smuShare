@@ -1,0 +1,16 @@
+AWS Account
+-----------------------------------------------
+username: flavia.ng.2017@sis.smu.edu.sg
+password: Password123
+
+
+smushare elastic beanstalk
+-----------------------------------------------
+Elastic IP: http://52.74.245.15/
+Domain URL: smushare.ml
+
+
+Freenom Acc
+-----------------------------------------------
+username: flavia.ng.2017@sis.smu.edu.sg
+password: #LZ2Mn*xyXV3G9D

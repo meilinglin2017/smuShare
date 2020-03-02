@@ -1,5 +1,6 @@
 @import 'http://code.ionicframework.com/iconicons/2.0.1/css/ionic.min.css'
 
+
 body{
     width: 100%;
     height:100%;
@@ -216,7 +217,7 @@ form h2{
     display:block;
     text-align: right;
     text-decoration:none;
-    color: #999;
+    color: rgb(104, 104, 104);
     font-size: 0.9rem;
     transition: .3s;
     padding-top: 5px;
@@ -443,7 +444,7 @@ nav ul li a{
     height: 150px;
     overflow:scroll;
     /* border: #d9d9d9 solid 1px; */
-    margin-top: 80px;
+    margin-top: 65px;
     margin-left: 650px;
     padding: 5px 0 0 40px;
 }
@@ -506,13 +507,10 @@ nav ul li a{
   bottom: 120px;
   box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.2);
 }
-.blog-card:hover .color-overlay {
-  background:#38d39fb3;
-}
 
 .title-content {
   text-align: left;
-  margin: 25px 0px 0px 25px;
+  margin: 20px 0px 0px 25px;
   position: absolute;
   z-index: 20;
   width: 100%;
@@ -521,7 +519,7 @@ nav ul li a{
 }
 
 .title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   letter-spacing: 2px;
   color: #74facd;
@@ -530,39 +528,42 @@ nav ul li a{
 }
 
 .intro {
-  width: 250px;
+  width: 240px;
   margin-top: 0px;
   color: #ffffff;
   font-family: 'Droid Serif', serif;
-  font-size: 16px;
+  font-size: 15px;
   font-style: italic;
   line-height: 18px;
 }
 
 .filename{
-    width: 270px;
-    margin-top: 10px;
+    width: 200px;
+    word-wrap: break-word;
+    margin-top: 12px;
     color: #ffffff;
     font-family: 'Droid Serif', serif;
-    font-size: 18px;
+    font-size: 13px;
     font-style: italic;
     line-height: 18px;
 }
 
-.card-button {
-  width: 100%;
-  position: absolute;
-  bottom: 100px;
-  left: 0;
-  margin: 0 auto;
-  padding: 0 50px;
-  color: #38d39f;
-  font-family: 'Droid Serif', serif;
-  font-style: 16px;
-  line-height: 24px;
-  z-index: 20;
-  opacity: 0;
-  transition: bottom 0.3s, opacity 0.3s cubic-bezier(0.33, 0.66, 0.66, 1);
+.card-link{
+    display:block;
+    text-align: right;
+    text-decoration:none;
+    color: aliceblue;
+    font-size: 0.9rem;
+    transition: .3s;
+    padding-top: 5px;
+}
+
+.card-link:hover{
+    color: #38d39f;
+}
+
+.blog-card.spring-fever:hover .card-button{
+    height:100%;
 }
 
 .utility-info {
@@ -574,7 +575,7 @@ nav ul li a{
 
 .utility-list {
   list-style-type: none;
-  margin: 0 0 30px 0px;
+  margin: 0 0 22px 0px;
   padding: 0;
   width: 100%;
 }
@@ -587,7 +588,7 @@ nav ul li a{
   font-size: 13px;
 }
 
-/* @import url("https://fonts.googleapis.com/css?family=Anton|Roboto"); */
+@import url("https://fonts.googleapis.com/css?family=Anton|Roboto");
 
 .word {
 	font-family: "Rosario", sans-serif;

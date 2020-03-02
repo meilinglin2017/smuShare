@@ -440,7 +440,17 @@ nav ul li a{
     z-index:-1;
 }
 
-.detailmainbg{
+.feedbackbg{
+    position:fixed;
+    height:70%;
+    top:450px;
+    left:73%;
+    z-index:-1;
+    width:50%;
+
+}
+
+.dlmainbg{
     position:fixed;
     height:100%;
     right:5%;
@@ -460,6 +470,22 @@ nav ul li a{
 }
 
 .detailmaintext{
+    width: 650px;
+    height: 200px;
+    overflow:scroll;
+    /* border: #d9d9d9 solid 1px; */
+    margin-top: 90px;
+    margin-left: 650px;
+    padding: 5px 0 0 40px;
+    /* background-color: rgba(7, 7, 7, 0.582); */
+}
+
+.detailmaintext .word p{
+    padding-top: 10px;
+    font-family: Rosario;
+}
+
+.dlmaintext{
     width: 650px;
     height: 150px;
     overflow: visible;
@@ -481,9 +507,9 @@ nav ul li a{
 }
 
 
-.detailcontent {
+.dlcontent {
     position: relative;
-    outline: none;
+    outline: rgba(7, 7, 7, 0.582);
     text-decoration: none;
     border-radius: 50px;
     display: flex;
@@ -499,18 +525,18 @@ nav ul li a{
     background-color: #ffffff;
     border: 1px solid #38d39f;
 }
-.detailcontent span{
+.dlcontent span{
     color: #38d39f;
     font-size: 16px;
     font-weight: 400;
     font-family: Rosario;
     letter-spacing: 0.7px;
 }
-.detailcontent:hover {
+.dlcontent:hover {
     animation: rotated 0.7s ease-in-out both;
-    background-color: #38d39f;;
+    background-color: #38d39f;
 }
-.detailcontent:hover span{
+.dlcontent:hover span{
     animation: storm 0.7s ease-in-out both;
     animation-delay: 0.06s;
     color:white;
@@ -660,10 +686,11 @@ nav ul li a{
 }
 
 .utility-info {
-  position: absolute;
-  bottom: 0px;
-  left: 0;
+  position: relative;
+  top: 130px;
+  right: 28px;
   z-index: 20;
+  display: inline-flex;
 }
 
 .utility-list {
@@ -866,4 +893,39 @@ nav ul li a{
     border-radius: 0;
     background-position: 100% center;
 }
+
+.feedback p{
+    position: relative;
+    width: fit-content;
+    background-color: #fff;
+    padding: 1.125em 1.5em;
+    font-size: 15px;
+    /* border-radius: 1rem; */
+    display: inline-block;
+    border: #38d39f 1px solid;
+    font-family: Rosario;
+    /* box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.3), 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.2); */
+}
+
+.feedback{
+    margin-top: 13px;
+    margin-left: 30px;
+    margin-right: 25px;
+}
+  
+.feedback p::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    bottom: 100%;
+    left: 1.5em;
+    border: .75rem solid transparent;
+    border-top: none;
+    border-bottom-color: #38d39f;
+    -webkit-filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, 0.1));
+            filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, 0.1));
+  }
+  
+  
 

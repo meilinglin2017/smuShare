@@ -242,6 +242,7 @@ form h2{
     background-size: 200%;
     transition: .5s;
     text-transform: uppercase;
+    font-family: Rosario;
 }
 
 .btn:hover{
@@ -439,6 +440,15 @@ nav ul li a{
     z-index:-1;
 }
 
+.detailmainbg{
+    position:fixed;
+    height:100%;
+    right:5%;
+    top:20%;
+    bottom:0;
+    z-index:-1;
+}
+
 .maintext{
     width: 650px;
     height: 150px;
@@ -449,15 +459,98 @@ nav ul li a{
     padding: 5px 0 0 40px;
 }
 
+.detailmaintext{
+    width: 650px;
+    height: 150px;
+    overflow: visible;
+    border-bottom: #d9d9d9 solid 1px;
+    margin-top: 150px;
+    margin-left: 380px;
+    padding: 5px 0 0 4px;
+    text-align: center;
+    align-content: center;
+}
+
 .content{
     width: 650px;
     height: 480px;
     overflow:scroll;
-    border-top: #d9d9d9 solid 1px;
+    /* border-top: #d9d9d9 solid 1px; */
     margin-left: 650px;
     padding: 5px;
 }
 
+
+.detailcontent {
+    position: relative;
+    outline: none;
+    text-decoration: none;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    height: 45px;
+    width: 150px;
+    opacity: 1;
+    margin-left: 635px;
+    margin-top: 35px;
+    background-color: #ffffff;
+    border: 1px solid #38d39f;
+}
+.detailcontent span{
+    color: #38d39f;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: Rosario;
+    letter-spacing: 0.7px;
+}
+.detailcontent:hover {
+    animation: rotated 0.7s ease-in-out both;
+    background-color: #38d39f;;
+}
+.detailcontent:hover span{
+    animation: storm 0.7s ease-in-out both;
+    animation-delay: 0.06s;
+    color:white;
+}
+  
+@keyframes rotated {
+    0% {
+      transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+    25% {
+      transform: rotate(3deg) translate3d(0, 0, 0);
+    }
+    50% {
+      transform: rotate(-3deg) translate3d(0, 0, 0);
+    }
+    75% {
+      transform: rotate(1deg) translate3d(0, 0, 0);
+    }
+    100% {
+      transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+}
+@keyframes storm {
+    0% {
+      transform: translate3d(0, 0, 0) translateZ(0);
+    }
+    25% {
+      transform: translate3d(4px, 0, 0) translateZ(0);
+    }
+    50% {
+      transform: translate3d(-3px, 0, 0) translateZ(0);
+    }
+    75% {
+      transform: translate3d(2px, 0, 0) translateZ(0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) translateZ(0);
+    }
+}
+  
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700);
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic);

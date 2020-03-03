@@ -227,6 +227,20 @@ form h2{
     color: #38d39f;
 }
 
+.dllink{
+    display:block;
+    text-align: right;
+    text-decoration:none;
+    color: #38d39f;
+    font-size: 0.9rem;
+    transition: .3s;
+    padding-top: 5px;
+}
+
+.dllink:hover{
+    color:white;
+}
+
 .btn{
     display: block;
     width: 100%;

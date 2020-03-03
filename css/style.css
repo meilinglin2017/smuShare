@@ -462,7 +462,6 @@ nav ul li a{
 .maintext{
     width: 650px;
     height: 150px;
-    overflow:scroll;
     /* border: #d9d9d9 solid 1px; */
     margin-top: 70px;
     margin-left: 650px;
@@ -472,7 +471,6 @@ nav ul li a{
 .detailmaintext{
     width: 650px;
     height: 200px;
-    overflow:scroll;
     /* border: #d9d9d9 solid 1px; */
     margin-top: 90px;
     margin-left: 650px;

@@ -441,12 +441,12 @@ nav ul li a{
 }
 
 .feedbackbg{
-    position:fixed;
-    height:70%;
-    top:450px;
-    left:73%;
-    z-index:-1;
-    width:50%;
+    position: fixed;
+    height: auto;
+    top: 500px;
+    left: 73%;
+    z-index: -1;
+    width: 35%;
 
 }
 
@@ -496,8 +496,8 @@ nav ul li a{
 }
 
 .content{
-    width: 650px;
-    height: 480px;
+    width: 660px;
+    height: 500px;
     overflow-y:scroll;
     border-top: #d9d9d9 solid 1px;
     margin-left: 650px;
@@ -693,7 +693,7 @@ nav ul li a{
 
 .utility-list {
   list-style-type: none;
-  margin: 0 0 22px 0px;
+  margin: 0 0 0px 20px;
   padding: 0;
   width: 100%;
 }
@@ -892,11 +892,15 @@ nav ul li a{
     background-position: 100% center;
 }
 
-.feedback p{
+.comment{
     position: relative;
     width: fit-content;
+    /* height: max-content; */
     background-color: #fff;
-    padding: 1.125em 1.5em;
+    padding: 1.1em 1.5em;
+    margin-top: 17px;
+    margin-left: 10px;
+    margin-bottom: 0px;
     font-size: 15px;
     /* border-radius: 1rem; */
     display: inline-block;
@@ -905,13 +909,12 @@ nav ul li a{
     /* box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.3), 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.2); */
 }
 
-.feedback{
-    margin-top: 13px;
-    margin-left: 30px;
+.feedbacks{
+    margin-left: 25px;
     margin-right: 25px;
 }
   
-.feedback p::before {
+.comment::before {
     content: '';
     position: absolute;
     width: 0;
@@ -923,7 +926,13 @@ nav ul li a{
     border-bottom-color: #38d39f;
     -webkit-filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, 0.1));
             filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, 0.1));
-  }
-  
-  
+}
 
+.comment p{
+    margin-bottom: 0px;
+}
+
+.fas{
+    padding-right: 10px; 
+    padding-bottom: 10px;
+}

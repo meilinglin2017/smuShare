@@ -519,7 +519,7 @@ nav ul li a{
 }
 
 
-.dlcontent {
+.dlcontent, .backbtn{
     position: relative;
     outline: rgba(7, 7, 7, 0.582);
     text-decoration: none;
@@ -537,18 +537,26 @@ nav ul li a{
     background-color: #ffffff;
     border: 1px solid #38d39f;
 }
-.dlcontent span{
+
+.dlcontent{
+    margin-top: 35px;
+}
+
+.backbtn{
+    margin-top: 10px;
+}
+.dlcontent a, .backbtn a{
     color: #38d39f;
     font-size: 16px;
     font-weight: 400;
     font-family: Rosario;
     letter-spacing: 0.7px;
 }
-.dlcontent:hover {
+.dlcontent:hover, .backbtn:hover{
     animation: rotated 0.7s ease-in-out both;
     background-color: #38d39f;
 }
-.dlcontent:hover span{
+.dlcontent:hover a, .backbtn:hover a{
     animation: storm 0.7s ease-in-out both;
     animation-delay: 0.06s;
     color:white;

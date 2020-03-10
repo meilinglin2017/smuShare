@@ -35,7 +35,7 @@ body{
 
 .button{
     text-decoration: none;
-    color: #00BFA6;
+    color: #38d39f;
     background: none;
     display: block;
     height:45px;
@@ -47,12 +47,12 @@ body{
     font-weight: normal;
     text-transform: uppercase;
     transition: all 0.2s ease-in-out;
-    border: #00BFA6 2px solid;
+    border: #38d39f 2px solid;
 }
   
 .glow-button:hover {
     color: rgba(255, 255, 255, 1);
-    background-color: #00BFA6;
+    background-color: #38d39f;
     box-shadow: 0 5px 15px rgba(255, 255, 255, 0.8);
 }
 
@@ -192,7 +192,7 @@ form h2{
 .input-div > div h5{
     position: absolute;
     left: 10px;
-    top: 50%;
+    top: 40%;
     transform: translate(5%,-180%);
     color: #999;
     font-size: 18px;
@@ -486,7 +486,7 @@ nav ul li a{
     width: 650px;
     height: 200px;
     /* border: #d9d9d9 solid 1px; */
-    margin-top: 90px;
+    margin-top: 70px;
     margin-left: 650px;
     padding: 5px 0 0 40px;
     /* background-color: rgba(7, 7, 7, 0.582); */
@@ -746,7 +746,7 @@ nav ul li a{
 }
 
 .word span:nth-child(1).active {
-	animation: balance 1.5s ease-out;
+	/* animation: balance 1.5s ease-out; */
 	transform-origin: bottom left;
 }
 
@@ -763,7 +763,7 @@ nav ul li a{
 }
 
 .word span:nth-child(2).active {
-	animation: shrinkjump 1s ease-in-out;
+	/* animation: shrinkjump 1s ease-in-out; */
 	transform-origin: bottom center;
 }
 
@@ -784,7 +784,7 @@ nav ul li a{
 }
 
 .word span:nth-child(3).active {
-	animation: falling 2s ease-out;
+	/* animation: falling 2s ease-out; */
 	transform-origin: bottom center;
 }
 
@@ -816,7 +816,7 @@ nav ul li a{
 }
 
 .word span:nth-child(4).active {
-	animation: rotate 1s ease-out;
+	/* animation: rotate 1s ease-out; */
 }
 
 @keyframes rotate {
@@ -831,7 +831,7 @@ nav ul li a{
 }
 
 .word span:nth-child(5).active {
-	animation: toplong 1.5s linear;
+	/* animation: toplong 1.5s linear; */
 }
 
 @keyframes toplong {
@@ -846,15 +846,15 @@ nav ul li a{
 }
 
 .word span:nth-child(6).active {
-	animation: balance 1.5s linear;
+	/* animation: balance 1.5s linear; */
 }
 
 .word span:nth-child(7).active {
-	animation: shrinkjump 1.5s linear;
+	/* animation: shrinkjump 1.5s linear; */
 }
 
 .word span:nth-child(8).active {
-	animation: falling 1.5s linear;
+	/* animation: falling 1.5s linear; */
 }
 
 .fixed {

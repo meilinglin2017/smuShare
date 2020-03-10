@@ -1,48 +1,54 @@
 <html>
     <head>
+
         <title>Login Form</title>
         <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
         <link rel = 'stylesheet' type='text/css' href = 'css/style.css'>
         <script src = 'https://kit.fontawesome.com/a81368914c.js'></script>
         <link href="https://fonts.googleapis.com/css?family=Fredoka+One&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Rosario&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
+
     </head>
     <body>
-        <img class='wave' src='img/dawn.png'>
-        <img class='wave2' src='img/dawn.png'>
+        <img class='wave animate animated fadeIn slow' src='img/dawn.png'>
+        <img class='wave2 animate animated fadeIn slow' src='img/dawn.png'>
         <div class='container login'>
-            <div class='img'>
+            <div class='img animate animated fadeIn slow'>
                 <img src='img/login.png'>
             </div>
             <div class='login-container'>
                 <form action='main.html'>
-                    <img class = 'avatar' src = 'img/avatar.png'>
-                    <h3 style="font-family:'Rosario';">Welcome Fellow SMU Bijs</h3>
-                    <p>Please enter your account details</p>
+                    <div class='animate animated fadeInDown'>
+                        <img class = 'avatar' src = 'img/avatar.png'>
+                        <h3 style="font-family:'Rosario';">Welcome Fellow SMU Bijs</h3>
+                        <p>Please enter your account details</p>
 
-                    <div class="input-div one">
-                        <div class="i">
-                            <i class = 'fas fa-user'></i>
+                        <div class="input-div one">
+                            <div class="i">
+                                <i class = 'fas fa-user'></i>
+                            </div>
+                            <div>
+                                <h5 style='font-family: Rosario;'>Username / Email</h5>
+                                <input class='input' type = 'text'>
+                            </div>
                         </div>
-                        <div>
-                            <h5 style='font-family: Rosario;'>Username / Email</h5>
-                            <input class='input' type = 'text'>
+
+                        <div class="input-div two">
+                            <div class='i'>
+                                <i class='fas fa-lock'></i>
+                            </div>
+                            <div>
+                                <h5 style='font-family: Rosario;'>Password</h5>
+                                <input class='input' type='password'>
+                            </div>
                         </div>
+                        <a class='link' href ='#'>Forgot Password?</a>
+                        <a class='link' href ='register.html'>Yet to register? Sign Up Now!</a>
                     </div>
 
-                    <div class="input-div two">
-                        <div class='i'>
-                            <i class='fas fa-lock'></i>
-                        </div>
-                        <div>
-                            <h5 style='font-family: Rosario;'>Password</h5>
-                            <input class='input' type='password'>
-                        </div>
-                    </div>
 
-                    <a class='link' href ='#'>Forgot Password?</a>
-                    <a class='link' href ='register.html'>Yet to register? Sign Up Now!</a>
-                    <input type='submit' class = 'btn' value = 'Login' style='font-family: Rosario;'>
+                    <input type='submit' class = 'btn animate animated fadeInUp' value = 'Login' style='font-family: Rosario;'>
                 </form>
 
             </div>

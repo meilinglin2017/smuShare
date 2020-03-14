@@ -51,5 +51,9 @@ class Material(db.Model):
         }
 
 # Review Info db table
+class Review(db.Model):
+    __tablename__ = 'review'
 
 # User Info db table
+class User(db.Model):
+    __tablename__ = 'user'

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -49,7 +49,29 @@ def deleteReview():
     pass
 
 ### FrontEnd Routes ###
+@app.route("/")
+def welcome():
+    return render_template('welcome.html')
 
+@app.route("/register/")
+def register():
+    return render_template('register.html')
+
+@app.route("/login/")
+def register():
+    return render_template('login.html')
+
+@app.route("/home/")
+def home():
+    return render_template('main.html')
+
+@app.route("/detail/")
+def register():
+    return render_template('detail.html')
+
+@app.route("/download/")
+def register():
+    return render_template('download.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

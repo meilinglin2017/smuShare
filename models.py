@@ -53,9 +53,31 @@ class Material(db.Model):
 ## Commenting off db tables below as init without complete table causes fatal error.
 
 # Review Info db table
-#class Review(db.Model):
-#    __tablename__ = 'review'
+class Review(db.Model):
+    __tablename__ = 'review_info'
+
+    review_ID = db.Column(db.Integer, primary_key = True)
+    rating = db.Column(db.Float, nullable = False)
+    review = db.Column(db.string(2048), nullable = False)
+    review_date = db.Column(db.DateTime, default = datetime.datetime.utcnow)
+
+    material = db.relationship('Material', back_populates = 'reviews')
+
+    def __init__(self, review_ID, rating, review, review_date):
+        self.review_ID = review_ID
+        self.rating = rating
+        self.review = review
+        self.review_date = review_date
+
 
 # User Info db table
 #class User(db.Model):
-#    __tablename__ = 'user'
+#    __tablename__ = 'user_info'
+
+# Course Info db table
+#class Course(db.Model):
+#    __tablename__ = 'course_info'
+
+# Prof Info db table
+#class Prof(db.Model):
+#    __tablename__ = 'prof_info'

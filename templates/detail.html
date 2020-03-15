@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
         <!-- jQuery library -->
@@ -20,8 +20,8 @@
         
     </head>
     <body class='main'>
-        <img class='mainbg' src='img/detail.png' style="right: 48%;">
-        <img class='feedbackbg' src='img/feedback.png'>
+        <img class='mainbg' src="{{ url_for('static', filename='img/detail.png') }}" style="right: 48%;">
+        <img class='feedbackbg' src="{{ url_for('static', filename='img/feedback.png') }}">
         <div class = 'container'>
             <nav>
                 <input type= 'checkbox' id = 'nav' class='hidden'>
@@ -31,8 +31,8 @@
                     <i></i>
                 </label>
                 <div class='logo'>
-                    <a href='main.html'>
-                        <img alt="Qries" src='img/logo.png' width='100' height='85'>
+                    <a href='../home'>
+                        <img alt="Qries" src="{{ url_for('static', filename='img/logo.png') }}" width='100' height='85'>
                     </a>
                 </div>
                 <div class='nav-wrapper'>
@@ -107,6 +107,6 @@
             </div>
         </div>
         
-        <script type='text/javascript' src="main.js"></script>
+        <script type='text/javascript' src="{{ url_for('static', filename='js/main.js') }}"></script>
     </body>
 </html>

@@ -3,7 +3,7 @@
 
         <title>Login Form</title>
         <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
-        <link rel = 'stylesheet' type='text/css' href = 'css/style.css'>
+        <link rel = 'stylesheet' type='text/css' href = "{{ url_for('static', filename='css/style.css') }}">
         <script src = 'https://kit.fontawesome.com/a81368914c.js'></script>
         <link href="https://fonts.googleapis.com/css?family=Fredoka+One&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Rosario&display=swap" rel="stylesheet">
@@ -11,16 +11,16 @@
 
     </head>
     <body>
-        <img class='wave animate animated fadeIn slow' src='img/dawn.png'>
-        <img class='wave2 animate animated fadeIn slow' src='img/dawn.png'>
+        <img class='wave animate animated fadeIn slow' src="{{ url_for('static', filename='img/dawn.png') }}">
+        <img class='wave2 animate animated fadeIn slow' src="{{ url_for('static', filename='img/dawn.png') }}">
         <div class='container login'>
             <div class='img animate animated fadeIn slow'>
-                <img src='img/login.png'>
+                <img src="{{ url_for('static', filename='img/login.png') }}">
             </div>
             <div class='login-container'>
-                <form action='main.html'>
+                <form action='../home'>
                     <div class='animate animated fadeInDown'>
-                        <img class = 'avatar' src = 'img/avatar.png'>
+                        <img class = 'avatar' src = "{{ url_for('static', filename='img/avatar.png') }}">
                         <h3 style="font-family:'Rosario';">Welcome Fellow SMU Bijs</h3>
                         <p>Please enter your account details</p>
 
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <a class='link' href ='#'>Forgot Password?</a>
-                        <a class='link' href ='register.html'>Yet to register? Sign Up Now!</a>
+                        <a class='link' href ='../register'>Yet to register? Sign Up Now!</a>
                     </div>
 
 
@@ -53,6 +53,6 @@
 
             </div>
         </div>
-        <script type='text/javascript' src="main.js"></script>
+        <script type='text/javascript' src="{{ url_for('static', filename='js/main.js') }}"></script>
     </body>
 </html>

@@ -50,10 +50,12 @@ class Material(db.Model):
             } for r in self.reviews]
         }
 
+## Commenting off db tables below as init without complete table causes fatal error.
+
 # Review Info db table
-class Review(db.Model):
-    __tablename__ = 'review'
+#class Review(db.Model):
+#    __tablename__ = 'review'
 
 # User Info db table
-class User(db.Model):
-    __tablename__ = 'user'
+#class User(db.Model):
+#    __tablename__ = 'user'

@@ -58,7 +58,7 @@ def register():
     return render_template('register.html')
 
 @app.route("/login/")
-def register():
+def login():
     return render_template('login.html')
 
 @app.route("/home/")
@@ -66,11 +66,11 @@ def home():
     return render_template('main.html')
 
 @app.route("/detail/")
-def register():
+def detail():
     return render_template('detail.html')
 
 @app.route("/download/")
-def register():
+def download():
     return render_template('download.html')
 
 if __name__ == '__main__':

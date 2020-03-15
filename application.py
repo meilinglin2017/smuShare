@@ -4,12 +4,15 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.debug = True
 
-# Change values when db is created
-username = ''
-password = ''
-host = ''
+# Change values when RDS db is created. Rather, RDS is created,
+# but test on local drive first. Connecting to EC2, S3, RDS
+# we will do it later with the parameters.
+username = 'smtusername'
+password = 'smtpassword'
+host = 'localhost' #'smt-testdb.cwbn7tc9bebt.ap-southeast-1.rds.amazonaws.com'
 port = 5432
-dbName = ''
+dbName = 'smusharedb' #'postgres' - default name given by RDS is postgres
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{}:{}@{}:{}/{}'.format(username, password, host, port, dbName)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

@@ -1,8 +1,15 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+import os
+
+
 
 app = Flask(__name__)
 app.debug = True
+
+# Change line for file saves
+app.config["IMAGE_UPLOADS"] = "/mnt/c/users/deken/desktop/GitHub\ Repositories/smuShare/static/upload"
 
 # Change values when RDS db is created. Rather, RDS is created,
 # but test on local drive first. Connecting to EC2, S3, RDS
@@ -71,6 +78,15 @@ def home():
 @app.route("/detail/")
 def detail():
     return render_template('detail.html')
+
+@app.route("/upload/", methods=["GET","POST"])
+def upload():
+    if request.method == "POST":
+        if request.files:
+            image = request.files["image"]
+            print(image)
+            return redirect(request.url)
+    return render_template('upload.html')
 
 @app.route("/download/")
 def download():

@@ -69,6 +69,10 @@ class Review(db.Model):
         self.review = review
         self.review_date = review_date
 
+    def __repr__(self):
+        return "{}_{}".format(self.file_name, self.file_ID)
+    
+
 
 # User Info db table
 #class User(db.Model):

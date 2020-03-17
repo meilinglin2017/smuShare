@@ -3,15 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import os
 
-
-
 app = Flask(__name__)
 app.debug = True
 
 # Change line for file saves
-app.config["IMAGE_UPLOADS"] = "/mnt/c/users/deken/desktop/GitHub\ Repositories/smuShare/static/upload"
-app.config["HOST"] = "0.0.0.0"
-app.config["PORT"] = "5000"
+allowed = {'txt', 'pdf', 'doc', 'zip'}
+app.config["IMAGE_UPLOADS"] = "/mnt/c/users/deken/desktop/GitHubRepositories/smuShare/static/upload"
+#app.config["HOST"] = "0.0.0.0"
+#app.config["PORT"] = "5000"
 
 # Change values when RDS db is created. Rather, RDS is created,
 # but test on local drive first. Connecting to EC2, S3, RDS
@@ -35,6 +34,11 @@ common_var = {
     "base" : base_url,
     "home" : base_url + "home"
 }
+
+### Definitions without API Routes ###
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in allowed
 
 ### API Routes ###
 # User Methods
@@ -99,7 +103,9 @@ def upload():
         if request.files:
             image = request.files["image"]
             print(image)
+            image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
             return redirect(request.url)
+            
     return render_template('upload.html', common = common_var)
 
 @app.route("/download/")

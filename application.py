@@ -27,6 +27,13 @@ db = SQLAlchemy(app)
 
 ### Import models ###
 
+### Common Variables used in multiple pages ###
+base_url = "http://localhost:5000/"
+common_var = {
+    "base" : base_url,
+    "home" : base_url + "home"
+}
+
 ### API Routes ###
 # User Methods
 @app.route("/searchFile/", methods = ['GET'])
@@ -61,23 +68,23 @@ def deleteReview():
 ### FrontEnd Routes ###
 @app.route("/")
 def welcome():
-    return render_template('welcome.html')
+    return render_template('welcome.html', common = common_var)
 
 @app.route("/register/")
 def register():
-    return render_template('register.html')
+    return render_template('register.html', common = common_var)
 
 @app.route("/login/")
 def login():
-    return render_template('login.html')
+    return render_template('login.html', common = common_var)
 
 @app.route("/home/")
 def home():
-    return render_template('main.html')
+    return render_template('main.html', common = common_var)
 
 @app.route("/detail/")
 def detail():
-    return render_template('detail.html')
+    return render_template('detail.html', common = common_var)
 
 @app.route("/upload/", methods=["GET","POST"])
 def upload():
@@ -86,11 +93,11 @@ def upload():
             image = request.files["image"]
             print(image)
             return redirect(request.url)
-    return render_template('upload.html')
+    return render_template('upload.html', common = common_var)
 
 @app.route("/download/")
 def download():
-    return render_template('download.html')
+    return render_template('download.html', common = common_var)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -18,7 +18,7 @@
                 <img src="{{ url_for('static', filename='img/login.png') }}">
             </div>
             <div class='login-container'>
-                <form action='../home'>
+                <form action='{{ common.home }}'>
                     <div class='animate animated fadeInDown'>
                         <img class = 'avatar' src = "{{ url_for('static', filename='img/avatar.png') }}">
                         <h3 style="font-family:'Rosario';">Welcome Fellow SMU Bijs</h3>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <a class='link' href ='#'>Forgot Password?</a>
-                        <a class='link' href ='../register'>Yet to register? Sign Up Now!</a>
+                        <a class='link' href ='{{ common.base }}register'>Yet to register? Sign Up Now!</a>
                     </div>
 
 

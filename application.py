@@ -10,6 +10,8 @@ app.debug = True
 
 # Change line for file saves
 app.config["IMAGE_UPLOADS"] = "/mnt/c/users/deken/desktop/GitHub\ Repositories/smuShare/static/upload"
+app.config["HOST"] = "0.0.0.0"
+app.config["PORT"] = "5000"
 
 # Change values when RDS db is created. Rather, RDS is created,
 # but test on local drive first. Connecting to EC2, S3, RDS
@@ -38,7 +40,12 @@ common_var = {
 # User Methods
 @app.route("/searchFile/", methods = ['GET'])
 def searchFile():
-    pass
+    search_key = ['file_name', 'prof_name', 'course_name', 'course_code']
+    file_name = request.args.get('file_name', False)
+    prof_name = request.args.get('prof_name', False)
+    course_name = request.args.get('course_name', False)
+    course_code = request.args.get('course_code', False)
+    
 
 @app.route("/getReviews/", methods = ['GET'])
 def getReviews():

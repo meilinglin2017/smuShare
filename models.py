@@ -16,7 +16,7 @@ class Material(db.Model):
     file_path = db.Column(db.String(200), nullable = False)
     upload_date = db.Column(db.DateTime, default = datetime.datetime.utcnow)
 
-    reviews = db.relationship('Review', back_populates = 'upload_file', uselist = True, cascade = 'all, delete-orphan', lazy = True)
+    reviews = db.relationship('Review', back_populates = 'material', uselist = True, cascade = 'all, delete-orphan', lazy = True)
 
     def __init__(self, course_code, course_name, prof_name, course_term, file_name, rating_avg, file_path, reviews = None):
         self.course_code = course_code
@@ -58,7 +58,7 @@ class Review(db.Model):
 
     review_ID = db.Column(db.Integer, primary_key = True)
     rating = db.Column(db.Float, nullable = False)
-    review = db.Column(db.string(2048), nullable = False)
+    review = db.Column(db.String(2048), nullable = False)
     review_date = db.Column(db.DateTime, default = datetime.datetime.utcnow)
 
     material = db.relationship('Material', back_populates = 'reviews')
@@ -70,7 +70,15 @@ class Review(db.Model):
         self.review_date = review_date
 
     def __repr__(self):
-        return "{}_{}".format(self.file_name, self.file_ID)
+        return "<review_id: {}>".format(self.review_ID)
+
+    def serialize(self):
+        return {
+            'review_ID' : self.review_ID,
+            'rating' : self.rating,
+            'review' : self.review,
+            'review_date' : self.review_date
+        }
     
 
 

@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+from pprint import pprint
 import os
 
 app = Flask(__name__)
@@ -27,6 +28,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 ### Import models ###
+from models import Material, Review
 
 ### Common Variables used in multiple pages ###
 base_url = "http://localhost:5000/"
@@ -101,11 +103,28 @@ def detail():
 def upload():
     if request.method == "POST":
         if request.files:
+
+            ## Debug method - check Ubuntu
+            print("below is locals")
+            file_name = request.form['file_name']
+            print(file_name)
+            pprint(locals())
+            print("above is locals")
+
+            ## Upload of file
             image = request.files["image"]
-            print(image)
             image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
-            return redirect(request.url)
             
+            ## append to Material Database
+            try:
+                new_material = Material(file_name=file_name, course_code='SMT203',course_name='Smart Cities', prof_name='Hwee Xian', course_term='AY19/20S2', rating_avg=4.5, file_path='zxc', reviews=None)
+                db.session.add(new_material)
+                db.session.commit()
+                return jsonify('{} was created'.format(new_material))
+                return redirect(request.url)
+            except Exception as e:
+                return (str(e))
+
     return render_template('upload.html', common = common_var)
 
 @app.route("/download/")

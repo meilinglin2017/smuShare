@@ -28,6 +28,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 ### Import models ###
+from models import Material
 
 ### Common Variables used in multiple pages ###
 base_url = "http://localhost:5000/"
@@ -40,11 +41,18 @@ common_var = {
 # User Methods
 @app.route("/searchFile/", methods = ['GET'])
 def searchFile():
-    search_key = ['file_name', 'prof_name', 'course_name', 'course_code']
-    file_name = request.args.get('file_name', False)
-    prof_name = request.args.get('prof_name', False)
-    course_name = request.args.get('course_name', False)
-    course_code = request.args.get('course_code', False)
+    conditions = []
+    if 'file_name' in request.args:
+        conditions.append(Material.file_name == request.args.get('file_name', False))
+    if 'prof_name' in request.args:
+        conditions.append(Material.prof_name == request.args.get('prof_name', False))
+    if 'course_name' in request.args:
+        conditions.append(Material.course_name == request.args.get('course_name', False))
+    if 'course_code' in request.args:
+        conditions.append(Material.course_code == request.args.get('course_code', False))
+    
+    # material = Material.query.filter(or_(*conditions))
+    # return material.serialize
     
 
 @app.route("/getReviews/", methods = ['GET'])

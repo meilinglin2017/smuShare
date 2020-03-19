@@ -60,6 +60,7 @@ class Review(db.Model):
     rating = db.Column(db.Float, nullable = False)
     review = db.Column(db.String(2048), nullable = False)
     review_date = db.Column(db.DateTime, default = datetime.datetime.utcnow)
+    file_id = db.Column(db.Integer, db.ForeignKey("file_info.file_ID"), nullable = False)
 
     material = db.relationship('Material', back_populates = 'reviews')
 

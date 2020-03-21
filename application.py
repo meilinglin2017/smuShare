@@ -57,9 +57,14 @@ def searchFile():
 def getReviews():
     pass
 
-@app.route("/uploadFile/", methods = ['POST'])
-def uploadFile():
-    pass
+# We do not need to have an uploadFile already because
+# we have /upload/ that receive both POST and GET. That is
+# done on the front-end and back-end instead of 
+# back-end only.
+
+#@app.route("/uploadFile/", methods = ['POST'])
+#def uploadFile():
+#    pass
 
 @app.route("/uploadReview/", methods = ['POST'])
 def uploadReview():
@@ -121,7 +126,6 @@ def upload():
                 db.session.add(new_material)
                 db.session.commit()
                 return jsonify('{} was created'.format(new_material))
-                return redirect(request.url)
             except Exception as e:
                 return (str(e))
 

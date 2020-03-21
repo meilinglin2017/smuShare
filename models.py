@@ -84,8 +84,8 @@ class Review(db.Model):
 
 
 # User Info db table
-#class User(db.Model):
-#    __tablename__ = 'user_info'
+class User(db.Model):
+    __tablename__ = 'user_info'
 
 # Course Info db table
 #class Course(db.Model):

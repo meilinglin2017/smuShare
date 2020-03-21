@@ -45,18 +45,14 @@ def allowed_file(filename):
 # User Methods
 @app.route("/searchFile/", methods = ['GET'])
 def searchFile():
-    conditions = []
-    if 'file_name' in request.args:
-        conditions.append(Material.file_name == request.args.get('file_name', False))
-    if 'prof_name' in request.args:
-        conditions.append(Material.prof_name == request.args.get('prof_name', False))
-    if 'course_name' in request.args:
-        conditions.append(Material.course_name == request.args.get('course_name', False))
-    if 'course_code' in request.args:
-        conditions.append(Material.course_code == request.args.get('course_code', False))
+    conditions = {}
+    attributes = ['file_name', 'prof_name', 'course_name', 'course_code']
+    for attr in attributes:
+        if attr in request.args:
+            conditions[attr] = request.args.get(attr)
     
-    # material = Material.query.filter(or_(*conditions))
-    # return material.serialize
+    material = Material.query.filter_by(conditions)
+    return material.serialize()
     
 
 @app.route("/getReviews/", methods = ['GET'])

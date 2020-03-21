@@ -64,11 +64,10 @@ class Review(db.Model):
 
     material = db.relationship('Material', back_populates = 'reviews')
 
-    def __init__(self, review_ID, rating, review, review_date):
-        self.review_ID = review_ID
+    def __init__(self, rating, review, file_id):
         self.rating = rating
         self.review = review
-        self.review_date = review_date
+        self.file_id = file_id
 
     def __repr__(self):
         return "<review_id: {}>".format(self.review_ID)

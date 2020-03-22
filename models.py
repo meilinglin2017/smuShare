@@ -60,14 +60,14 @@ class Review(db.Model):
     rating = db.Column(db.Float, nullable = False)
     review = db.Column(db.String(2048), nullable = False)
     review_date = db.Column(db.DateTime, default = datetime.datetime.utcnow)
+    file_id = db.Column(db.Integer, db.ForeignKey("file_info.file_ID"), nullable = False)
 
     material = db.relationship('Material', back_populates = 'reviews')
 
-    def __init__(self, review_ID, rating, review, review_date):
-        self.review_ID = review_ID
+    def __init__(self, rating, review, file_id):
         self.rating = rating
         self.review = review
-        self.review_date = review_date
+        self.file_id = file_id
 
     def __repr__(self):
         return "<review_id: {}>".format(self.review_ID)
@@ -83,8 +83,8 @@ class Review(db.Model):
 
 
 # User Info db table
-#class User(db.Model):
-#    __tablename__ = 'user_info'
+class User(db.Model):
+    __tablename__ = 'user_info'
 
 # Course Info db table
 #class Course(db.Model):

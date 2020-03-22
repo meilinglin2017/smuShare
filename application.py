@@ -46,20 +46,84 @@ def allowed_file(filename):
 # User Methods
 @app.route("/searchFile/", methods = ['GET'])
 def searchFile():
-    search_key = ['file_name', 'prof_name', 'course_name', 'course_code']
-    file_name = request.args.get('file_name', False)
-    prof_name = request.args.get('prof_name', False)
-    course_name = request.args.get('course_name', False)
-    course_code = request.args.get('course_code', False)
+    conditions = {}
+    attributes = ['file_name', 'prof_name', 'course_name', 'course_code']
+    for attr in attributes:
+        if attr in request.args:
+            conditions[attr] = request.args.get(attr)
+    
+    material = Material.query.filter_by(conditions).first()
+    return material.serialize()
     
 
 @app.route("/getReviews/", methods = ['GET'])
 def getReviews():
-    pass
+    if 'file_ID' in request.args:
+        id = int(request.args.get('file_ID'))
+        review = Review.query.filter_by(file_ID = id).first()
+        return jsonify(review.serialize())
+    
+    reviews = Review.query.all()
+    return jsonify([r.serialize() for r in reviews])
 
+# We do not need to have an uploadFile already because
+# we have /upload/ that receive both POST and GET. That is
+# done on the front-end and back-end instead of 
+# back-end only.
+
+# In case need to reference for /upload/
 @app.route("/uploadFile/", methods = ['POST'])
 def uploadFile():
-    pass
+    try:
+        file_name = request.json['file_name']
+        prof_name = request.json['prof_name']
+        course_code = request.json['course_code']
+        course_term = request.json['course_term']
+        input_file = request.json['input_file']
+
+        reviews = []
+        rating_avg = 0
+        if 'reviews' in request.json:
+            reviews = request.json['reviews']
+            rating_avg = getRatingAvg(reviews)
+
+        new_file = Material(
+            course_code = course_code,
+            # course_name,
+            prof_name = prof_name,
+            course_term = course_term,
+            file_name = file_name,
+            # file_path,
+            rating_avg = rating_avg,
+            reviews = reviews)
+        db.session.add(new_file)
+        db.session.commit()
+
+        for review in reviews:
+            new_review = Review(comments = review, file_id = new_file.file_ID)
+            db.session.add(new_review)
+            db.session.commit()
+
+        return jsonify("{} was created".format(new_file))
+    except KeyError:
+        # Not all params are filled
+        return jsonify({
+            'status' : 405,
+            'message' : 'Not all required parameters are filled'
+        })
+    except Exception as e:
+        return str(e)
+            
+
+def getRatingAvg(reviews):
+    total = 0
+    for review in reviews:
+        total += review['rating']
+    return total/len(reviews)
+
+#@app.route("/uploadFile/", methods = ['POST'])
+#def uploadFile():
+#    pass
 
 @app.route("/uploadReview/", methods = ['POST'])
 def uploadReview():
@@ -121,7 +185,6 @@ def upload():
                 db.session.add(new_material)
                 db.session.commit()
                 return jsonify('{} was created'.format(new_material))
-                return redirect(request.url)
             except Exception as e:
                 return (str(e))
 

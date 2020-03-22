@@ -127,7 +127,21 @@ def getRatingAvg(reviews):
 
 @app.route("/uploadReview/", methods = ['POST'])
 def uploadReview():
-    pass
+    file_ID = request.json['file_ID']
+    review = request.json['review']
+    rating = request.json['rating']
+
+    try:
+        filez = Material.query.filter_by(id=file_ID).first()
+        if filez is None:
+            return ('{} does not exist'.format(filez))
+        new_review = Review(rating=rating, review=review, file_id=file_ID)
+        db.session.add(new_review)
+        db.session.commit()
+
+        return jsonify('{} score and the review was created for file ID {}'.format(rating,file_ID))
+    except Exception as e:
+        return (str(e)) 
 
 # Developer Methods
 @app.route("/updateFile/", methods = ['PUT'])

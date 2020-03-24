@@ -59,9 +59,9 @@ def searchFile():
 
 @app.route("/getReviews/", methods = ['GET'])
 def getReviews():
-    if 'file_ID' in request.args:
-        id = int(request.args.get('file_ID'))
-        review = Review.query.filter_by(file_ID = id).first()
+    if 'file_id' in request.args:
+        id = int(request.args.get('file_id'))
+        review = Review.query.filter_by(file_id = id).first()
         return jsonify(review.serialize())
     
     reviews = Review.query.all()
@@ -101,7 +101,7 @@ def uploadFile():
         db.session.commit()
 
         for review in reviews:
-            new_review = Review(comments = review, file_id = new_file.file_ID)
+            new_review = Review(comments = review, file_id = new_file.file_id)
             db.session.add(new_review)
             db.session.commit()
 
@@ -128,19 +128,19 @@ def getRatingAvg(reviews):
 
 @app.route("/uploadReview/", methods = ['POST'])
 def uploadReview():
-    file_ID = request.json['file_ID']
+    file_id = request.json['file_id']
     review = request.json['review']
     rating = request.json['rating']
 
     try:
-        filez = Material.query.filter_by(id=file_ID).first()
+        filez = Material.query.filter_by(id=file_id).first()
         if filez is None:
             return ('{} does not exist'.format(filez))
-        new_review = Review(rating=rating, review=review, file_id=file_ID)
+        new_review = Review(rating=rating, review=review, file_id=file_id)
         db.session.add(new_review)
         db.session.commit()
 
-        return jsonify('{} score and the review was created for file ID {}'.format(rating,file_ID))
+        return jsonify('{} score and the review was created for file ID {}'.format(rating,file_id))
     except Exception as e:
         return (str(e)) 
 

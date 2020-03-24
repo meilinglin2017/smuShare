@@ -2,11 +2,16 @@ import datetime
 
 from application import db
 
+# Many-to-Many relationship between course and prof
+course_prof_table = db.Table('course_prof',
+                            db.Column('course_id', db.ForeignKey('course_info.course_id'), primary_key = True),
+                            db.Column('prof_id', db.ForeignKey('prof_info.prof_id'), primary_key = True))
+
 # File Info db table (Cannot use File cause is existing python object already)
 class Material(db.Model):
     __tablename__ = 'file_info'
 
-    file_ID = db.Column(db.Integer, primary_key = True)
+    file_id = db.Column(db.Integer, primary_key = True)
     course_code = db.Column(db.String(10), nullable = False)
     course_name = db.Column(db.String(200), nullable = False)
     prof_name = db.Column(db.String(200), nullable = False)
@@ -16,11 +21,16 @@ class Material(db.Model):
     file_path = db.Column(db.String(200), nullable = False)
     upload_date = db.Column(db.DateTime, default = datetime.datetime.utcnow)
 
+    # Foreign Keys
+    user_id = db.Column(db.Integer, db.ForeignKey('user_info.user_id'), nullable = False)
+    course_id = db.Column(db.Integer, db.ForeignKey('course_info.course_id'), nullable = False)
+    prof_id = db.Column(db.Integer, db.ForeignKey('prof_info.prof_id'), nullable = False)
+
     # One file may have multiple reviews, but it belongs to only one prof, one course and one user.
     file_reviews = db.relationship('Review', back_populates = 'materials', uselist = True, cascade = 'all, delete-orphan', lazy = True)
-    user_upload = db.relationship('User', back_populates= 'uploads', lazy = True)
-    course_info = db.relationship('Course', back_populates = 'courses', lazy = True)
-    professor_notes = db.relationship('Prof', back_populates= 'professors', lazy = True)
+    uploader = db.relationship('User', back_populates= 'uploads', lazy = True)
+    course = db.relationship('Course', back_populates = 'files', lazy = True)
+    professors = db.relationship('Prof', back_populates= 'notes', lazy = True)
 
     def __init__(self, course_code, course_name, prof_name, course_term, file_name, rating_avg, file_path, reviews = None):
         self.course_code = course_code
@@ -33,11 +43,11 @@ class Material(db.Model):
         self.reviews = [] if reviews is None else reviews
 
     def __repr__(self):
-        return "{}_{}".format(self.file_name, self.file_ID)
+        return "{}_{}".format(self.file_name, self.file_id)
     
     def serialize(self):
         return {
-            'file_ID' : self.file_ID,
+            'file_id' : self.file_id,
             'course_code' : self.course_code,
             'course_name' : self.course_name,
             'prof_name' : self.prof_name,
@@ -47,7 +57,7 @@ class Material(db.Model):
             'file_path' : self.file_path,
             'upload_date' : self.upload_date,
             'reviews' : [{
-                'review_ID' : r.rating_ID,
+                'review_id' : r.rating_ID,
                 'rating' : r.rating,
                 'review' : r.review,
                 'review_date' : r.review_date
@@ -60,11 +70,12 @@ class Material(db.Model):
 class Review(db.Model):
     __tablename__ = 'review_info'
 
-    review_ID = db.Column(db.Integer, primary_key = True)
+    review_id = db.Column(db.Integer, primary_key = True)
     rating = db.Column(db.Float, nullable = False)
     review = db.Column(db.String(2048), nullable = False)
     review_date = db.Column(db.DateTime, default = datetime.datetime.utcnow)
-    file_id = db.Column(db.Integer, db.ForeignKey("file_info.file_ID"), nullable = False)
+    file_id = db.Column(db.Integer, db.ForeignKey("file_info.file_id"), nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user_info.user_id"), nullable = False)
 
     materials = db.relationship('Material', back_populates = 'reviews')
     users = db.relationship('User', back_populates = 'user_reviews')
@@ -75,11 +86,11 @@ class Review(db.Model):
         self.file_id = file_id
 
     def __repr__(self):
-        return "<review_id: {}>".format(self.review_ID)
+        return "<review_id: {}>".format(self.review_id)
 
     def serialize(self):
         return {
-            'review_ID' : self.review_ID,
+            'review_id' : self.review_id,
             'rating' : self.rating,
             'review' : self.review,
             'review_date' : self.review_date
@@ -97,7 +108,7 @@ class User(db.Model):
     password = db.Column(db.String(16), nullable = False)
 
     reviews = db.relationship('Review', back_populates = 'users', uselist = True, lazy = True)
-    uploads = db.relationship('Material', back_populates = 'user_upload', uselist = True, lazy = True)
+    uploads = db.relationship('Material', back_populates = 'uploader', uselist = True, lazy = True)
 
     def __init__(self, username, password):
         self.username = username
@@ -126,8 +137,8 @@ class Course(db.Model):
     course_code = db.Column(db.String(6), nullable = False)
     course_name = db.Column(db.String(80), nullable = False)
 
-    courses = db.relationship('Material', back_populates = 'course_info', uselist = False, lazy = True)
-    by_professor = db.relationship('Professor', back_populates = 'course_by', uselist = False, lazy = True)
+    files = db.relationship('Material', back_populates = 'course', uselist = True, lazy = True)
+    professors = db.relationship('Professor', secondary = course_prof_table, back_populates = 'courses', lazy = True)
 
     def __init__(self, course_code, course_name):
         self.course_code = course_code
@@ -153,8 +164,8 @@ class Prof(db.Model):
     prof_email = db.Column(db.String(80), nullable = False)
     prof_name = db.Column(db.String(80), nullable = False)
 
-    professors = db.relationship('Material', back_populates = 'professor_notes', uselist = False, lazy = True)
-    course_by = db.relationship('Course', back_populates = 'by_professor', uselist = False, lazy = True)
+    notes = db.relationship('Material', back_populates = 'professors', uselist = True, lazy = True)
+    courses = db.relationship('Course', secondary = course_prof_table, back_populates = 'professors', lazy = True)
 
     def __init__(self, prof_email, prof_name):
         self.prof_email = prof_email

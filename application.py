@@ -28,11 +28,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 ### Import models ###
-from models import Material, Review
+from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-# base_url = "http://localhost:5000/"
-base_url = "http://eb-docker-flask.eba-v2wjze7x.us-west-2.elasticbeanstalk.com/"
+base_url = "http://localhost:5000/"
+#base_url = "http://eb-docker-flask.eba-v2wjze7x.us-west-2.elasticbeanstalk.com/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -79,6 +79,7 @@ def uploadFile():
         file_name = request.json['file_name']
         prof_name = request.json['prof_name']
         course_code = request.json['course_code']
+        course_name = request.json['course_name']
         course_term = request.json['course_term']
         input_file = request.json['input_file']
 
@@ -90,18 +91,18 @@ def uploadFile():
 
         new_file = Material(
             course_code = course_code,
-            # course_name,
+            course_name = course_name,
             prof_name = prof_name,
             course_term = course_term,
             file_name = file_name,
-            # file_path,
+            file_path = "123",
             rating_avg = rating_avg,
-            reviews = reviews)
+            reviews = reviews,)
         db.session.add(new_file)
         db.session.commit()
 
         for review in reviews:
-            new_review = Review(comments = review, file_id = new_file.file_id)
+            new_review = Review(comments = review, file_id = new_file.file_id, review = "Hello")
             db.session.add(new_review)
             db.session.commit()
 

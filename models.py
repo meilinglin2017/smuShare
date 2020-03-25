@@ -77,8 +77,8 @@ class Review(db.Model):
     file_id = db.Column(db.Integer, db.ForeignKey("file_info.file_id"), nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey("user_info.user_id"), nullable = False)
 
-    materials = db.relationship('Material', back_populates = 'reviews')
-    users = db.relationship('User', back_populates = 'user_reviews')
+    materials = db.relationship('Material', back_populates = 'file_reviews')
+    users = db.relationship('User', back_populates = 'reviews')
 
     def __init__(self, rating, review, file_id):
         self.rating = rating
@@ -138,7 +138,7 @@ class Course(db.Model):
     course_name = db.Column(db.String(80), nullable = False)
 
     files = db.relationship('Material', back_populates = 'course', uselist = True, lazy = True)
-    professors = db.relationship('Professor', secondary = course_prof_table, back_populates = 'courses', lazy = True)
+    professors = db.relationship('Prof', secondary = course_prof_table, back_populates = 'courses', lazy = True)
 
     def __init__(self, course_code, course_name):
         self.course_code = course_code

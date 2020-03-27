@@ -1,10 +1,9 @@
-### FOR POPULATING SQL QUERIES, TO TEST THE FILE UPLOAD FEATURE BECAUSE FOREIGN KEY MAKES IT NULL
+from sqlalchemy import create_engine  
+from sqlalchemy import Column, String  
+from sqlalchemy.ext.declarative import declarative_base  
+from sqlalchemy.orm import sessionmaker
 
-from sqlalchemy import update
+db_string = "postgres://admin:donotusethispassword@aws-us-east-1-portal.19.dblayer.com:15813/compose"
 
-newToner = Toner(toner_id = 1,
-                    toner_color = 'blue',
-                    toner_hex = '#0F85FF')
-
-dbsession.add(newToner)   
-dbsession.flush()
+db = create_engine(db_string)  
+base = declarative_base()

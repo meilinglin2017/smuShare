@@ -4,10 +4,10 @@ from application import app,db
 
 migrate = Migrate(app, db)
 manager = Manager(app)
-manager.add_command('db', MigrateCommand)
-manager.add_command("runserver", Server(host='127.0.0.1', port=5000))
 
-#manager.add_command("runserver", Server(host=app.config['HOST'], port=app.config['PORT']))
+manager.add_command('db', MigrateCommand)
+#manager.add_command("runserver", Server(host='127.0.0.1', port=5000))
+manager.add_command("runserver", Server(host=app.config['HOST'], port=app.config['PORT']))
 
 if __name__ == '__main__':
     manager.run()

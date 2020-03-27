@@ -9,18 +9,18 @@ app.debug = True
 
 # Change line for file saves
 allowed = {'txt', 'pdf', 'doc', 'zip'}
-app.config["IMAGE_UPLOADS"] = "/mnt/c/users/deken/desktop/GitHubRepositories/smuShare/static/upload"
-#app.config["HOST"] = "0.0.0.0"
-#app.config["PORT"] = "5000"
+app.config["IMAGE_UPLOADS"] = "" ##"/mnt/c/users/deken/desktop/GitHubRepositories/smuShare/static/upload" ## This is used to slot in S3 bucket.
+app.config["HOST"] = "0.0.0.0"
+app.config["PORT"] = "5000"
 
 # Change values when RDS db is created. Rather, RDS is created,
 # but test on local drive first. Connecting to EC2, S3, RDS
 # we will do it later with the parameters.
 username = 'smtusername'
 password = 'smtpassword'
-host = 'localhost' #'smt-testdb.cwbn7tc9bebt.ap-southeast-1.rds.amazonaws.com'
+host = 'aa77fccri7bpdt.cz4bsejequqa.us-west-2.rds.amazonaws.com' #'aa77fccri7bpdt.cz4bsejequqa.us-west-2.rds.amazonaws.com'
 port = 5432
-dbName = 'smusharedb' #'postgres' - default name given by RDS is postgres
+dbName = 'postgres' #'postgres' - default name given by RDS is postgres
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{}:{}@{}:{}/{}'.format(username, password, host, port, dbName)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -31,8 +31,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-base_url = "http://localhost:5000/"
-#base_url = "http://eb-docker-flask.eba-v2wjze7x.us-west-2.elasticbeanstalk.com/"
+#base_url = "http://localhost:5000/"
+base_url = "http://eb-docker-flask.eba-v2wjze7x.us-west-2.elasticbeanstalk.com/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"

@@ -129,6 +129,10 @@ def getRatingAvg(reviews):
 
 @app.route("/uploadReview/", methods = ['POST'])
 def uploadReview():
+    empty_fields = ', '.join([field for field in ['file_id', 'review', 'rating'] if field not in request.json])
+    if empty_fields != '':
+		return jsonify('Parameter(s) {} not found'.format(empty_fields))
+
     file_id = request.json['file_id']
     review = request.json['review']
     rating = request.json['rating']
@@ -156,7 +160,9 @@ def deleteFile():
 
 @app.route("/deleteReview/", methods = ['DELETE'])
 def deleteReview():
-    file_id = request.json['file_id'] # I think dont need file_id
+    # file_id = request.json['file_id'] # I think dont need file_id
+    if 'review_id' not in request.json:
+        return jsonify("Parameter(s) review_id is empty")
     review_id = request.json['review_id']
     review = Review.query.get(review_id)
     db.session.delete(review)

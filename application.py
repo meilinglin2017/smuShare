@@ -156,7 +156,12 @@ def deleteFile():
 
 @app.route("/deleteReview/", methods = ['DELETE'])
 def deleteReview():
-    pass
+    file_id = request.json['file_id'] # I think dont need file_id
+    review_id = request.json['review_id']
+    review = Review.query.get(review_id)
+    db.session.delete(review)
+    db.session.commit()
+    return jsonify('Review id {} is deleted'.format(review_id))
 
 ### FrontEnd Routes ###
 @app.route("/")

@@ -5,8 +5,8 @@
 #  - if there is changes to file name, need to process dl_link to return original filename
 import boto3
 
-s3_access_key_id = "AKIA4YHNNVAJLVVKOE52"
-s3_secret_access_key = "kcqLw1Fpp77nyvU+VDbuE3PAF0mMPNbKHmnqpziG"
+s3_access_key_id = "<your-key-id>"
+s3_secret_access_key = "<your-access-key>"
 s3_resource = boto3.resource('s3', aws_access_key_id = s3_access_key_id, aws_secret_access_key = s3_secret_access_key)
 bucket_name = "elasticbeanstalk-us-west-2-876671248402"
 bucket_region = "us-west-2"

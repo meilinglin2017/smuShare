@@ -19,7 +19,7 @@ def s3_upload_file(file_name, file_content):
     bucket.upload_fileobj(file_content, file_name, ExtraArgs={'ACL':'public-read'})
 
 # Return the href to put into html for downloading
-def s3_download_file(file_name):
+def s3_get_link(file_name):
     # https://elasticbeanstalk-us-west-2-876671248402.s3-us-west-2.amazonaws.com/test.txt
     return "https://{}.s3-{}.amazonaws.com/{}".format(bucket_name, bucket_region, file_name)
 

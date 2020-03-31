@@ -511,7 +511,7 @@ nav ul li a{
 
 .content{
     width: 660px;
-    height: 500px;
+    height: 450px;
     overflow-y:scroll;
     border-top: #d9d9d9 solid 1px;
     margin-left: 650px;
@@ -519,7 +519,7 @@ nav ul li a{
 }
 
 
-.dlcontent, .backbtn{
+.dlcontent, .backbtn, input[type=submit]{
     position: relative;
     outline: rgba(7, 7, 7, 0.582);
     text-decoration: none;
@@ -545,18 +545,30 @@ nav ul li a{
 .backbtn{
     margin-top: 10px;
 }
-.dlcontent a, .backbtn a{
+
+input[type=submit]{
+    margin-left: inherit;
+    display: inline-block;
+    margin-top:0px;
+}
+
+.select-file{
+    margin: inherit; 
+    margin-top: 30px;
+}
+
+.dlcontent a, .backbtn a, input[type=submit], .select-file span{
     color: #38d39f;
     font-size: 16px;
     font-weight: 400;
     font-family: Rosario;
     letter-spacing: 0.7px;
 }
-.dlcontent:hover, .backbtn:hover{
+.dlcontent:hover, .backbtn:hover, input[type=submit]:hover{
     animation: rotated 0.7s ease-in-out both;
     background-color: #38d39f;
 }
-.dlcontent:hover a, .backbtn:hover a{
+.dlcontent:hover a, .backbtn:hover a, input[type=submit]:hover, .select-file:hover span{
     animation: storm 0.7s ease-in-out both;
     animation-delay: 0.06s;
     color:white;
@@ -958,3 +970,47 @@ nav ul li a{
     padding-right: 10px; 
     padding-bottom: 10px;
 }
+
+.upload-form{
+	width: 650px;
+	font-size: 16px;
+	padding: 20px 30px 15px 32px;
+	border: 2px dashed #38d39f;
+}
+
+.upload-form input[type=submit],
+.upload-form input[type=button],
+.upload-form input[type=text],
+.upload-form input[type=email],
+.upload-form label
+{
+	font-size: 16px;
+}
+
+.upload-form label {
+	display:block;
+	margin-bottom: 10px;
+}
+
+.upload-form label > span{
+	display: inline-block;
+	float: left;
+	width: 150px;
+}
+
+.upload-form input[type=text]
+{
+	background: transparent;
+	border: none;
+	border-bottom: 1px dashed rgb(131, 131, 131);
+	width: 275px;
+	outline: none;
+	padding: 0px 0px 0px 0px;
+	font-style: italic;
+}
+
+.upload-form input[type=text]:focus
+{
+	border-bottom: 1px dashed #38d39f;
+}
+

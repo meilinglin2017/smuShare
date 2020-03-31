@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="../static/css/style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
         <!-- jQuery library -->
@@ -20,7 +20,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
     </head>
     <body class='main'>
-        <img class='mainbg animate animated fadeInLeft' src="{{ url_for('static', filename='img/mainbg.png') }}">
+        <img class='mainbg animate animated fadeInLeft' src="../static/img/results.png" style="width:65%; height:auto;">
         <div class = 'container animate animated fadeInDown slow-2s'>
             <nav>
                 <input type= 'checkbox' id = 'nav' class='hidden'>
@@ -31,7 +31,7 @@
                 </label>
                 <div class='logo'>
                     <a href='{{ common.home }}'>
-                        <img alt="Qries" src="{{ url_for('static', filename='img/logo.png') }}" width='100' height='85'>
+                        <img alt="Qries" src="../static/img/logo.png" width='100' height='85'>
                     </a>
                 </div>
                 <div class='nav-wrapper'>
@@ -47,18 +47,11 @@
             </nav>
         </div>
         <div class='maintext animate animated fadeInRight delay-0.5s slow-1s'>
-            <h3 class="fixed">Hello</h3>
+            <h3 class="fixed">Search</h3>
             <div class="word">
-                <span>S</span>
-                <span>M</span>
-                <span>U</span>
-                <span>g</span>
-                <span>g</span>
-                <span>e</span>
-                <span>r</span>
-                <span>!</span>
+                <span>Results</span>
             </div>
-            <div class='describe'>What would you like to study today?</div>
+            <div class='describe'>Here are the files available! Take your pick :)</div>
         </div>
         <div class = 'content animate animated fadeInUp'>
             <div class="blog-card spring-fever">

@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from pprint import pprint
 import os
+from s3bucket import s3_upload_file, s3_download_file
 
 app = Flask(__name__)
 app.debug = True
@@ -31,7 +32,7 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-#base_url = "http://localhost:5000/"
+# base_url = "http://localhost:5000/"
 base_url = "http://eb-docker-flask.eba-v2wjze7x.us-west-2.elasticbeanstalk.com/"
 common_var = {
     "base" : base_url,
@@ -182,6 +183,10 @@ def getRatingAvg(reviews):
 
 @app.route("/uploadReview/", methods = ['POST'])
 def uploadReview():
+    empty_fields = ', '.join([field for field in ['file_id', 'review', 'rating'] if field not in request.json])
+    if empty_fields != '':
+		return jsonify('Parameter(s) {} not found'.format(empty_fields))
+
     file_id = request.json['file_id']
     review = request.json['review']
     rating = request.json['rating']
@@ -209,7 +214,14 @@ def deleteFile():
 
 @app.route("/deleteReview/", methods = ['DELETE'])
 def deleteReview():
-    pass
+    # file_id = request.json['file_id'] # I think dont need file_id
+    if 'review_id' not in request.json:
+        return jsonify("Parameter(s) review_id is empty")
+    review_id = request.json['review_id']
+    review = Review.query.get(review_id)
+    db.session.delete(review)
+    db.session.commit()
+    return jsonify('Review id {} is deleted'.format(review_id))
 
 ### FrontEnd Routes ###
 @app.route("/")
@@ -257,7 +269,13 @@ def upload():
             except Exception as e:
                 return (str(e))
 
-    return render_template('upload.html', common = common_var)
+    profList = [p.prof_name for p in Prof.query.all()]
+    courseDict = {}
+    courses = Course.query.all()
+    for course in courses:
+        courseDict[course.course_code] = course.course_name
+
+    return render_template('upload-new.html', common = common_var, profList = profList, courseDict = courseDict)
 
 @app.route("/download/")
 def download():

@@ -108,8 +108,8 @@ def searchFile():
         if attr in request.args:
             conditions[attr] = request.args.get(attr)
     
-    material = Material.query.filter_by(conditions).first()
-    return material.serialize()
+    materials = Material.query.filter_by(conditions)
+    return [m.serialize() for m in materials], 200
     
 
 @app.route("/getReviews/", methods = ['GET'])
@@ -117,10 +117,10 @@ def getReviews():
     if 'file_id' in request.args:
         id = int(request.args.get('file_id'))
         review = Review.query.filter_by(file_id = id).first()
-        return jsonify(review.serialize())
+        return jsonify(review.serialize()), 200
     
     reviews = Review.query.all()
-    return jsonify([r.serialize() for r in reviews])
+    return jsonify([r.serialize() for r in reviews]), 200
 
 # We do not need to have an uploadFile already because
 # we have /upload/ that receive both POST and GET. That is
@@ -136,7 +136,7 @@ def uploadFile():
         course_code = request.json['course_code']
         course_name = request.json['course_name']
         course_term = request.json['course_term']
-        input_file = request.json['input_file']
+        input_file = request.files['input_file']
 
         user_id = request.json['user_id']
         course_id = request.json['course_id']
@@ -157,22 +157,18 @@ def uploadFile():
         db.session.refresh(new_file)
 
         s3_filename = new_file.id + "_" + file_name
-        request.files[""].save(s3_filename)
+        input_file.save(s3_filename)
         s3_upload_file(s3_filename, open(s3_filename, "rb"))
         new_file.file_path = s3_get_link(s3_filename)
         db.session.commit()
 
-        return jsonify("{} was created".format(new_file))
+        return jsonify("{} was created".format(new_file)), 200
     except KeyError:
         # Not all params are filled
-        return jsonify({
-            'status' : 405,
-            'message' : 'Not all required parameters are filled'
-        })
+        return jsonify('Not all required parameters are filled'), 405
     except Exception as e:
         return str(e)
             
-
 def getRatingAvg(reviews):
     total = 0
     for review in reviews:
@@ -187,7 +183,7 @@ def getRatingAvg(reviews):
 def uploadReview():
     empty_fields = ', '.join([field for field in ['file_id', 'review', 'rating'] if field not in request.json])
     if empty_fields != '':
-        return jsonify('Parameter(s) {} not found'.format(empty_fields))
+        return jsonify('Parameter(s) {} not found'.format(empty_fields)), 405
 
     file_id = request.json['file_id']
     review = request.json['review']
@@ -201,18 +197,42 @@ def uploadReview():
         db.session.add(new_review)
         db.session.commit()
 
-        return jsonify('{} score and the review was created for file ID {}'.format(rating,file_id))
+        return jsonify('{} score and the review was created for file ID {}'.format(rating,file_id)), 200
     except Exception as e:
         return (str(e)) 
 
 # Developer Methods
 @app.route("/updateFile/", methods = ['PUT'])
 def updateFile():
-    pass
+    if 'file_id' not in request.json:
+        return jsonify('file_id not entered')
+    
+    file_id = request.json['file_id']
+    target_file = Material.query.get(file_id)
+    if target_file is None:
+        return jsonify("File id {} is updated".format(file_id)), 405
+    
+    if 'file_name' in request.json:
+        target_file.file_name = request.json['file_name']
+    if 'prof_name' in request.json:
+        target_file.prof_name = request.json['prof_name']
+    if 'course_code' in request.json:
+        target_file.course_code = request.json['course_code']
+    if 'course_term' in request.json:
+        target_file.course_term = request.json['course_term']
+    db.session.commit()
+    return jsonify(target_file.serialize()), 200
 
 @app.route("/deleteFile/", methods = ['DELETE'])
 def deleteFile():
-    pass
+    if 'file_id' not in request.json:
+        return jsonify('file_id not entered')
+    
+    file_id = request.json['file_id']
+    material = Material.query.get(file_id)
+    db.session.delete(material)
+    db.session.commit()
+    return jsonify("File id {} is deleted".format(file_id)), 200
 
 @app.route("/deleteReview/", methods = ['DELETE'])
 def deleteReview():
@@ -223,7 +243,7 @@ def deleteReview():
     review = Review.query.get(review_id)
     db.session.delete(review)
     db.session.commit()
-    return jsonify('Review id {} is deleted'.format(review_id))
+    return jsonify('Review id {} is deleted'.format(review_id)), 200
 
 ### FrontEnd Routes ###
 @app.route("/")

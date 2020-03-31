@@ -32,19 +32,16 @@ class Material(db.Model):
     course = db.relationship('Course', back_populates = 'files', lazy = True)
     professors = db.relationship('Prof', back_populates= 'notes', lazy = True)
 
-    def __init__(self, course_code, course_name, prof_name, course_term, file_name, rating_avg, file_path, user_id, course_id, prof_id, reviews = None):
+    def __init__(self, course_code, course_name, prof_name, course_term, file_name, file_path, user_id, course_id, prof_id):
         self.course_code = course_code
         self.course_name = course_name
         self.prof_name = prof_name
         self.course_term = course_term
         self.file_name = file_name
-        self.rating_avg = rating_avg
         self.file_path = file_path
         self.user_id = user_id
         self.course_id = course_id
         self.prof_id = prof_id
-        self.reviews = [] if reviews is None else reviews
-        
 
     def __repr__(self):
         return "{}_{}".format(self.file_name, self.file_id)
@@ -57,7 +54,6 @@ class Material(db.Model):
             'prof_name' : self.prof_name,
             'course_term' : self.course_term,
             'file_name' : self.file_name,
-            'rating_avg' : self.rating_avg,
             'file_path' : self.file_path,
             'upload_date' : self.upload_date,
             'reviews' : [{

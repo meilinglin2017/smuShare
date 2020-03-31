@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from pprint import pprint
 import os
-from s3bucket import s3_upload_file, s3_download_file
+from s3bucket import s3_upload_file, s3_get_link
+from io import StringIO
 
 app = Flask(__name__)
 app.debug = True
@@ -42,55 +43,55 @@ common_var = {
 
 ### Commit ONCE for testing
 
-sample_user = User(
-    username = "ilovesmt203",
-    password = "abcdefgh"
-)
+# sample_user = User(
+#     username = "ilovesmt203",
+#     password = "abcdefgh"
+# )
 
-db.session.add(sample_user)
-db.session.commit()
-db.session.refresh(sample_user)
+# db.session.add(sample_user)
+# db.session.commit()
+# db.session.refresh(sample_user)
 
-sample_course_code = Course(
-    course_code = "SMT203",
-    course_name = "Smart City System and Management"
-)
+# sample_course_code = Course(
+#     course_code = "SMT203",
+#     course_name = "Smart City System and Management"
+# )
 
-db.session.add(sample_course_code)
-db.session.commit()
-db.session.refresh(sample_course_code)
+# db.session.add(sample_course_code)
+# db.session.commit()
+# db.session.refresh(sample_course_code)
 
-sample_prof = Prof(
-    prof_email = "hxtan@smu.edu.sg",
-    prof_name = "Tan Hwee Xian"
-)
+# sample_prof = Prof(
+#     prof_email = "hxtan@smu.edu.sg",
+#     prof_name = "Tan Hwee Xian"
+# )
 
-db.session.add(sample_prof)
-db.session.commit()
-db.session.refresh(sample_prof)
-
-
-sample_material = Material(
-    course_code = "SMT203",
-    course_name = "Smart City System and Management",
-    prof_name = "Tan Hwee Xian",
-    course_term = "AY19/20S2",
-    file_name = "Juicy Cheatsheet",
-    file_path = "sample_path",
-    rating_avg = 5.0,
-    user_id = sample_user.user_id,
-    course_id = sample_course_code.course_id,
-    prof_id = sample_prof.prof_id,
-    reviews = []
-)
+# db.session.add(sample_prof)
+# db.session.commit()
+# db.session.refresh(sample_prof)
 
 
-db.session.add(sample_course_code)
-db.session.commit()
-db.session.add(sample_prof)
-db.session.commit()
-db.session.add(sample_material)
-db.session.commit()
+# sample_material = Material(
+#     course_code = "SMT203",
+#     course_name = "Smart City System and Management",
+#     prof_name = "Tan Hwee Xian",
+#     course_term = "AY19/20S2",
+#     file_name = "Juicy Cheatsheet",
+#     file_path = "sample_path",
+#     rating_avg = 5.0,
+#     user_id = sample_user.user_id,
+#     course_id = sample_course_code.course_id,
+#     prof_id = sample_prof.prof_id,
+#     reviews = []
+# )
+
+
+# db.session.add(sample_course_code)
+# db.session.commit()
+# db.session.add(sample_prof)
+# db.session.commit()
+# db.session.add(sample_material)
+# db.session.commit()
 
 ### Definitions without API Routes ###
 def allowed_file(filename):
@@ -137,11 +138,9 @@ def uploadFile():
         course_term = request.json['course_term']
         input_file = request.json['input_file']
 
-        reviews = []
-        rating_avg = 0
-        if 'reviews' in request.json:
-            reviews = request.json['reviews']
-            rating_avg = getRatingAvg(reviews)
+        user_id = request.json['user_id']
+        course_id = request.json['course_id']
+        prof_id = request.json['prof_id']
 
         new_file = Material(
             course_code = course_code,
@@ -149,16 +148,19 @@ def uploadFile():
             prof_name = prof_name,
             course_term = course_term,
             file_name = file_name,
-            file_path = "123",
-            rating_avg = rating_avg,
-            reviews = reviews,)
+            file_path = "thisisatempurl",
+            user_id = user_id,
+            course_id = course_id,
+            prof_id = prof_id)
         db.session.add(new_file)
         db.session.commit()
+        db.session.refresh(new_file)
 
-        for review in reviews:
-            new_review = Review(comments = review, file_id = new_file.file_id, review = "Hello")
-            db.session.add(new_review)
-            db.session.commit()
+        s3_filename = new_file.id + "_" + file_name
+        request.files[""].save(s3_filename)
+        s3_upload_file(s3_filename, open(s3_filename, "rb"))
+        new_file.file_path = s3_get_link(s3_filename)
+        db.session.commit()
 
         return jsonify("{} was created".format(new_file))
     except KeyError:

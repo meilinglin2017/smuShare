@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Latest compiled and minified CSS -->
+        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+        <link rel="stylesheet" href="../static/css/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src = 'https://kit.fontawesome.com/a81368914c.js'></script>
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Rosario&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
+    </head>
+    <body class='main'>
+        <img class='mainbg animate animated fadeInLeft' src="../static/img/review.png" style="width:65%; height:auto;">
+        <div class = 'container animate animated fadeInDown slow-2s'>
+            <nav>
+                <input type= 'checkbox' id = 'nav' class='hidden'>
+                <label for='nav' class='nav-btn'>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </label>
+                <div class='logo'>
+                    <a href='{{ common.home }}'>
+                        <img alt="Qries" src="../static/img/logo.png" width='100' height='85'>
+                    </a>
+                </div>
+                <div class='nav-wrapper'>
+                    <ul>
+                        <li>
+                            <input class="search__input" type="text" placeholder="Search">
+                        </li>
+                        <li><a href='../upload' class='fas fa-upload link'></a></li>
+                        <li><a href='#' class='fas fa-comments link'></a></li>
+                        <li><a href='#' class='fas fa-user link'></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class='maintext animate animated fadeInRight delay-0.5s slow-1s'>
+            <h3 class="fixed">File</h3>
+            <div class="word">
+                <span>Upload</span>
+            </div>
+            <div class='describe'>Thank you for contributing to the community!</div>
+        </div>
+        <div class = 'content animate animated fadeInUp' style="height: 430px;  font-family: Rosario;">
+            <form class="upload-form" action="" method="post">
+                <h5 style="padding-bottom: 15px;">Please enter the fields below</h5>
+                
+                <label for="field2">
+                <span>Course Code</span><input type="text" name="field2" required="true" list="courseCodes" oninput="getCourseName(this.value)"/>
+                <datalist id="courseCodes">
+                    {% for code in courseDict.keys() %}
+                        <option value="{{ code }}">
+                    {% endfor %}
+                </datalist>
+                </label>
+                <label for="field3">
+                <span>Course Name</span><input type="text" name="field3" required="true" id="courseName" />
+                </label>
+                <label for="field4">
+                    <span>Course Semester</span><input type="text" name="field3" required="true" />
+                    </label>
+                <label for="field4">
+                <span>Professor Name</span><input type="text" name="field4" required="true" list="profNames" />
+                <datalist id="profNames">
+                    {% for prof in profList %}
+                        <option value="{{ prof }}">
+                    {% endfor %}
+                </datalist>
+                </label>
+                <p style="font-size: small; font-style: italic;">Note: Ensure that your file is well labelled such that fellow smuggers will know what this file is about. Thank You! :3 E.g SMT203_Python_Cheatsheet.pdf</p>
+                <div class='dlcontent select-file'>
+                    <span>Select File</span>
+                </div>
+                <label>
+                <span> </span><input type="submit" value="Submit File" />
+                </label>
+            </form>
+        </div>
+        <script type='text/javascript' src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script>
+            
+            function getCourseName(courseCode) {
+                var courseDict = {{ courseDict|tojson }};
+                document.getElementById("courseName").value = courseDict[courseCode]
+            }
+        </script>
+    </body>
+</html>

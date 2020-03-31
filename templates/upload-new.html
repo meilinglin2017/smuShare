@@ -59,16 +59,26 @@
                 <h5 style="padding-bottom: 15px;">Please enter the fields below</h5>
                 
                 <label for="field2">
-                <span>Course Code</span><input type="text" name="field2" required="true" />
+                <span>Course Code</span><input type="text" name="field2" required="true" list="courseCodes" oninput="getCourseName(this.value)"/>
+                <datalist id="courseCodes">
+                    {% for code in courseDict.keys() %}
+                        <option value="{{ code }}">
+                    {% endfor %}
+                </datalist>
                 </label>
                 <label for="field3">
-                <span>Course Name</span><input type="text" name="field3" required="true" />
+                <span>Course Name</span><input type="text" name="field3" required="true" id="courseName" />
                 </label>
                 <label for="field4">
                     <span>Course Semester</span><input type="text" name="field3" required="true" />
                     </label>
                 <label for="field4">
-                <span>Professor Name</span><input type="text" name="field4" required="true" />
+                <span>Professor Name</span><input type="text" name="field4" required="true" list="profNames" />
+                <datalist id="profNames">
+                    {% for prof in profList %}
+                        <option value="{{ prof }}">
+                    {% endfor %}
+                </datalist>
                 </label>
                 <p style="font-size: small; font-style: italic;">Note: Ensure that your file is well labelled such that fellow smuggers will know what this file is about. Thank You! :3 E.g SMT203_Python_Cheatsheet.pdf</p>
                 <div class='dlcontent select-file'>
@@ -80,5 +90,12 @@
             </form>
         </div>
         <script type='text/javascript' src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script>
+            
+            function getCourseName(courseCode) {
+                var courseDict = {{ courseDict|tojson }};
+                document.getElementById("courseName").value = courseDict[courseCode]
+            }
+        </script>
     </body>
 </html>

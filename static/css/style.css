@@ -988,17 +988,16 @@ input[type=submit]{
 }
 
 .upload-form label {
-	display:block;
+	display:inline-flex;
 	margin-bottom: 10px;
 }
 
 .upload-form label > span{
 	display: inline-block;
-	float: left;
 	width: 150px;
 }
 
-.upload-form input[type=text]
+.upload-form input[type=text],.upload-form textarea
 {
 	background: transparent;
 	border: none;
@@ -1014,3 +1013,90 @@ input[type=submit]{
 	border-bottom: 1px dashed #38d39f;
 }
 
+.upload-form textarea:focus
+{
+    border: 1px dashed #38d39f;
+}
+
+.upload-form textarea{
+	font-style: italic;
+	background: transparent;
+	outline: none;
+	border: 1px dashed rgb(131, 131, 131);
+	width: 275px;
+	overflow: hidden;
+    resize:none;
+    padding: 5px;
+}
+
+.radio-stars {
+    display: inline-block;
+    position: relative;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    counter-reset: star-rating;
+    font-size: 0;
+}
+
+.radio-stars:hover .radio-star::before {
+    content: '☆';
+}
+
+.radio-stars:hover .radio-star:hover::before,
+.radio-stars:hover .radio-star:hover ~ .radio-star::before {
+    content: '★';
+}
+
+.radio-star {
+    display: inline-block;
+    overflow: hidden;
+    cursor: pointer;
+    padding-right: 45px;
+    width: .9em;
+    direction: ltr;
+    color: rgba(0, 0, 0, 0.25);
+    font-size: 40px;
+    white-space: nowrap;
+}
+
+.radio-star::before {
+    content: '☆';
+}
+
+.radio-star:hover, .radio-star:hover ~ .radio-star, input:checked ~ .radio-star {
+    color: orange;
+}
+
+input:checked ~ .radio-star {
+    counter-increment: star-rating;
+}
+  
+input:checked ~ .radio-star::before {
+    content: '★';
+}
+
+.radio-star-total {
+    pointer-events: none;
+    direction: ltr;
+    unicode-bidi: bidi-override;
+    position: absolute;
+    right: -2em;
+    bottom: .5em;
+    color: gray;
+    font-size: 20px;
+}
+
+.radio-star-total::before {
+    content: counter(star-rating) "/5";
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    margin: -1px;
+    padding: 0;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}

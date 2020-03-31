@@ -52,40 +52,33 @@
             <div class="word">
                 <span>Review</span>
             </div>
-            <div class='describe'>Liking your new notes? Let the community know how it is!</div>
+            <div class='describe'>Liking 123456_SMT203_Cheatsheet.pdf? Leave a review! </div>
         </div>
         <div class = 'content animate animated fadeInUp' style="height: 430px;  font-family: Rosario;">
             <form class="upload-form" action="" method="post">
                 <h5 style="padding-bottom: 15px;">Please fill in the review form below</h5>
                 
                 <label for="field2">
-                <span>Course Code</span><input type="text" name="field2" required="true" list="courseCodes" oninput="getCourseName(this.value)"/>
-                <datalist id="courseCodes">
-                    {% for code in courseDict.keys() %}
-                        <option value="{{ code }}">
-                    {% endfor %}
-                </datalist>
+                <span>Rating</span>
+                    <div class="radio-stars">
+                        <input class="sr-only" id="radio-5" name="radio-star" type="radio" value="5" />
+                        <label class="radio-star" for="radio-5"></label>
+                        <input checked="" class="sr-only" id="radio-4" name="radio-star" type="radio" value="4" />
+                        <label class="radio-star" for="radio-4"></label>
+                        <input class="sr-only" id="radio-3" name="radio-star" type="radio" value="3" />
+                        <label class="radio-star" for="radio-3"></label>
+                        <input class="sr-only" id="radio-2" name="radio-star" type="radio" value="2" />
+                        <label class="radio-star" for="radio-2"></label>
+                        <input class="sr-only" id="radio-1" name="radio-star" type="radio" value="1" />
+                        <label class="radio-star" for="radio-1"></label>
+                        <span class="radio-star-total"></span>
+                    </div>
                 </label>
                 <label for="field3">
-                <span>Course Name</span><input type="text" name="field3" required="true" id="courseName" />
+                    <span>Review</span><textarea name="field4" onkeyup="adjust_textarea(this)" required="true"></textarea>
                 </label>
-                <label for="field4">
-                    <span>Course Semester</span><input type="text" name="field3" required="true" />
-                    </label>
-                <label for="field4">
-                <span>Professor Name</span><input type="text" name="field4" required="true" list="profNames" />
-                <datalist id="profNames">
-                    {% for prof in profList %}
-                        <option value="{{ prof }}">
-                    {% endfor %}
-                </datalist>
-                </label>
-                <p style="font-size: small; font-style: italic;">Note: Ensure that your file is well labelled such that fellow smuggers will know what this file is about. Thank You! :3 E.g SMT203_Python_Cheatsheet.pdf</p>
-                <div class='dlcontent select-file'>
-                    <span>Select File</span>
-                </div>
                 <label>
-                <span> </span><input type="submit" value="Submit File" />
+                <span> </span><input type="submit" value="Submit Review" />
                 </label>
             </form>
         </div>

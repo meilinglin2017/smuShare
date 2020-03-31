@@ -185,7 +185,7 @@ def getRatingAvg(reviews):
 def uploadReview():
     empty_fields = ', '.join([field for field in ['file_id', 'review', 'rating'] if field not in request.json])
     if empty_fields != '':
-		return jsonify('Parameter(s) {} not found'.format(empty_fields))
+        return jsonify('Parameter(s) {} not found'.format(empty_fields))
 
     file_id = request.json['file_id']
     review = request.json['review']

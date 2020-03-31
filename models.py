@@ -32,7 +32,7 @@ class Material(db.Model):
     course = db.relationship('Course', back_populates = 'files', lazy = True)
     professors = db.relationship('Prof', back_populates= 'notes', lazy = True)
 
-    def __init__(self, course_code, course_name, prof_name, course_term, file_name, rating_avg, file_path, reviews = None):
+    def __init__(self, course_code, course_name, prof_name, course_term, file_name, rating_avg, file_path, user_id, course_id, prof_id, reviews = None):
         self.course_code = course_code
         self.course_name = course_name
         self.prof_name = prof_name
@@ -40,7 +40,11 @@ class Material(db.Model):
         self.file_name = file_name
         self.rating_avg = rating_avg
         self.file_path = file_path
+        self.user_id = user_id
+        self.course_id = course_id
+        self.prof_id = prof_id
         self.reviews = [] if reviews is None else reviews
+        
 
     def __repr__(self):
         return "{}_{}".format(self.file_name, self.file_id)
@@ -80,10 +84,11 @@ class Review(db.Model):
     materials = db.relationship('Material', back_populates = 'file_reviews')
     users = db.relationship('User', back_populates = 'reviews')
 
-    def __init__(self, rating, review, file_id):
+    def __init__(self, rating, review, file_id, user_id):
         self.rating = rating
         self.review = review
         self.file_id = file_id
+        self.user_id = user_id
 
     def __repr__(self):
         return "<review_id: {}>".format(self.review_id)
@@ -113,9 +118,7 @@ class User(db.Model):
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.reviews = []
-        self.uploads = []
-    
+        
     def __repr__(self):
         return "{} is created".format(self.username)
     
@@ -143,7 +146,6 @@ class Course(db.Model):
     def __init__(self, course_code, course_name):
         self.course_code = course_code
         self.course_name = course_name
-        self.professors = []
 
     def __repr__(self):
         return "{} is created".format(self.course_code)
@@ -170,7 +172,6 @@ class Prof(db.Model):
     def __init__(self, prof_email, prof_name):
         self.prof_email = prof_email
         self.prof_name = prof_name
-        self.courses = []
 
     def __repr__(self):
         return "{} is created".format(self.prof_name)

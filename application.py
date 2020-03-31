@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from pprint import pprint
 import os
+from s3bucket import s3_upload_file, s3_download_file
 
 app = Flask(__name__)
 app.debug = True
@@ -31,7 +32,7 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-#base_url = "http://localhost:5000/"
+# base_url = "http://localhost:5000/"
 base_url = "http://eb-docker-flask.eba-v2wjze7x.us-west-2.elasticbeanstalk.com/"
 common_var = {
     "base" : base_url,
@@ -215,7 +216,13 @@ def upload():
             except Exception as e:
                 return (str(e))
 
-    return render_template('upload.html', common = common_var)
+    profList = [p.prof_name for p in Prof.query.all()]
+    courseDict = {}
+    courses = Course.query.all()
+    for course in courses:
+        courseDict[course.course_code] = course.course_name
+
+    return render_template('upload-new.html', common = common_var, profList = profList, courseDict = courseDict)
 
 @app.route("/download/")
 def download():

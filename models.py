@@ -68,8 +68,6 @@ class Material(db.Model):
             } for r in self.reviews]
         }
 
-## Commenting off db tables below as init without complete table causes fatal error.
-
 # Review Info db table
 class Review(db.Model):
     __tablename__ = 'review_info'
@@ -108,7 +106,7 @@ class User(db.Model):
     __tablename__ = 'user_info'
 
     user_id = db.Column(db.Integer, primary_key = True)
-    username = db.Column(db.String(64), nullable = False)
+    username = db.Column(db.String(64), unique = True, nullable = False)
     #Lets assume this password is already hashed...
     password = db.Column(db.String(16), nullable = False)
 
@@ -137,8 +135,8 @@ class Course(db.Model):
     __tablename__ = 'course_info'
 
     course_id = db.Column(db.Integer, primary_key = True)
-    course_code = db.Column(db.String(6), nullable = False)
-    course_name = db.Column(db.String(80), nullable = False)
+    course_code = db.Column(db.String(6), unique = True, nullable = False)
+    course_name = db.Column(db.String(80), unique = True, nullable = False)
 
     files = db.relationship('Material', back_populates = 'course', uselist = True, lazy = True)
     professors = db.relationship('Prof', secondary = course_prof_table, back_populates = 'courses', lazy = True)
@@ -163,8 +161,8 @@ class Prof(db.Model):
     __tablename__ = 'prof_info'
 
     prof_id = db.Column(db.Integer, primary_key = True)
-    prof_email = db.Column(db.String(80), nullable = False)
-    prof_name = db.Column(db.String(80), nullable = False)
+    prof_email = db.Column(db.String(80), unique = True, nullable = False)
+    prof_name = db.Column(db.String(80), unique = True, nullable = False)
 
     notes = db.relationship('Material', back_populates = 'professors', uselist = True, lazy = True)
     courses = db.relationship('Course', secondary = course_prof_table, back_populates = 'professors', lazy = True)

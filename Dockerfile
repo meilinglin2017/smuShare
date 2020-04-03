@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM  python:3-onbuild
 COPY . /app
 WORKDIR /app
 RUN pip install -r req.txt 

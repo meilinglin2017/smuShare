@@ -103,21 +103,24 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(64), unique = True, nullable = False)
+    email = db.Column(db.String(64), unique = True, nullable = False)
     #Lets assume this password is already hashed...
     password = db.Column(db.String(16), nullable = False)
 
     reviews = db.relationship('Review', back_populates = 'users', uselist = True, lazy = True)
     uploads = db.relationship('Material', back_populates = 'uploader', uselist = True, lazy = True)
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, email):
         self.username = username
         self.password = password
+        self.email = email
         
     def __repr__(self):
         return "{} is created".format(self.username)
     
     def serialize(self):
         return {
+            'email': self.email,
             'user_id': self.user_id,
             'username': self.username,
             'password': self.password,

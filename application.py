@@ -162,10 +162,10 @@ def uploadFile():
         new_file.file_path = s3_get_link(s3_filename)
         db.session.commit()
 
-        return jsonify("{} was created".format(new_file)), 200
+        return jsonify("{} was created".format(new_file)), 201
     except KeyError:
         # Not all params are filled
-        return jsonify('Not all required parameters are filled'), 405
+        return jsonify('Not all required parameters are filled'), 400
     except Exception as e:
         return str(e)
             
@@ -183,7 +183,7 @@ def getRatingAvg(reviews):
 def uploadReview():
     empty_fields = ', '.join([field for field in ['file_id', 'review', 'rating'] if field not in request.json])
     if empty_fields != '':
-        return jsonify('Parameter(s) {} not found'.format(empty_fields)), 405
+        return jsonify('Parameter(s) {} not found'.format(empty_fields)), 400
 
     file_id = request.json['file_id']
     review = request.json['review']
@@ -197,7 +197,7 @@ def uploadReview():
         db.session.add(new_review)
         db.session.commit()
 
-        return jsonify('{} score and the review was created for file ID {}'.format(rating,file_id)), 200
+        return jsonify('{} score and the review was created for file ID {}'.format(rating,file_id)), 201
     except Exception as e:
         return (str(e)) 
 
@@ -210,7 +210,7 @@ def updateFile():
     file_id = request.json['file_id']
     target_file = Material.query.get(file_id)
     if target_file is None:
-        return jsonify("File id {} is updated".format(file_id)), 405
+        return jsonify("File id {} does not exist".format(file_id)), 404
     
     if 'file_name' in request.json:
         target_file.file_name = request.json['file_name']
@@ -245,6 +245,54 @@ def deleteReview():
     db.session.commit()
     return jsonify('Review id {} is deleted'.format(review_id)), 200
 
+### Middleman Routes ###
+"""
+These routes will call the api and redirect to frontend
+"""
+@app.route("/authenticate/<form_action>/", methods = ['POST'])
+def check_user(form_action):
+    error_msg = []
+    if form_action == 'register':
+        prev_html = 'register.html'
+        if set(('email', 'username', 'password', 'password2')) <= set(request.json):
+            auth_url = common_var['base'] + "authenticate/register/"
+            error_msg.append("Some fields are empty")
+            return render_template('register.html', common = common_var, auth_url = auth_url, errors = error_msg)
+
+        email = request.json['email']
+        username = request.json['username']
+        password = request.json['password']
+        password2 = request.json['password2']
+
+        user = User.query.filter_by(username = username).first()
+        if user is not None:
+            error_msg.append("Username already exist")
+        if password != password2:
+            error_msg.append("Passwords does not match")
+    
+    if form_action == 'login':
+        prev_html = 'login.html'
+        if set(('username', 'password')) <= set(request.json):
+            auth_url = common_var['base'] + "authenticate/login/"
+            error_msg.append("Some fields are empty")
+            return render_template('login.html', common = common_var, auth_url = auth_url, errors = error_msg)
+        
+        username = request.json['username']
+        password = request.json['password']
+
+        user = User.query.filter_by(username = username).first()
+        if '@' in username:
+            user = User.query.filter_by(email = username).first()
+        
+        if user is None:
+            error_msg.append("Username/Email not registered yet")
+        elif password != user.password:
+            error_msg.append("Password is incorrect")
+
+    if error_msg != []:
+        return render_template(prev_html, common = common_var, auth_url = auth_url, errors = error_msg)
+    return redirect(common_var['home'])
+
 ### FrontEnd Routes ###
 @app.route("/")
 def welcome():
@@ -252,11 +300,13 @@ def welcome():
 
 @app.route("/register/")
 def register():
-    return render_template('register.html', common = common_var)
+    auth_url = common_var['base'] + "authenticate/register/"
+    return render_template('register.html', common = common_var, auth_url = auth_url)
 
 @app.route("/login/")
 def login():
-    return render_template('login.html', common = common_var)
+    auth_url = common_var['base'] + "authenticate/login/"
+    return render_template('login.html', common = common_var, auth_url = auth_url)
 
 @app.route("/home/")
 def home():

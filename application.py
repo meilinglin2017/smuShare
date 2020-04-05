@@ -4,7 +4,6 @@ from werkzeug.utils import secure_filename
 from pprint import pprint
 import os
 from s3bucket import s3_upload_file, s3_get_link
-from io import StringIO
 
 app = Flask(__name__)
 app.debug = True
@@ -156,11 +155,17 @@ def uploadFile():
         db.session.commit()
         db.session.refresh(new_file)
 
+        # Save file to web directory for boto3 to read
         s3_filename = new_file.id + "_" + file_name
         input_file.save(s3_filename)
-        s3_upload_file(s3_filename, open(s3_filename, "rb"))
+        s3_file = open(s3_filename, "rb")
+        s3_upload_file(s3_filename, s3_file)
         new_file.file_path = s3_get_link(s3_filename)
         db.session.commit()
+
+        # Remove file from web directory
+        s3_file.close()
+        os.remove(s3_filename)
 
         return jsonify("{} was created".format(new_file)), 201
     except KeyError:
@@ -174,10 +179,6 @@ def getRatingAvg(reviews):
     for review in reviews:
         total += review['rating']
     return total/len(reviews)
-
-#@app.route("/uploadFile/", methods = ['POST'])
-#def uploadFile():
-#    pass
 
 @app.route("/uploadReview/", methods = ['POST'])
 def uploadReview():

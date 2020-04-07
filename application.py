@@ -33,7 +33,7 @@ from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
 # base_url = "http://localhost:5000/"
-base_url = "http://eb-docker-flask.eba-v2wjze7x.us-west-2.elasticbeanstalk.com/"
+base_url = "http://smushare.us-west-2.elasticbeanstalk.com/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"

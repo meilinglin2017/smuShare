@@ -48,34 +48,36 @@
             </nav>
         </div>
         <div class='detailmaintext'>
-            <h3 class="fixed">SMT 203</h3>
+            <h3 class="fixed">{{ material.course_code }}</h3>
             <div class="word">
-                <span style='font-size: 30px;'>Smart City Systems And Management</span>
-                <p>Professor Tan Hui Xian</p>
+                <span style='font-size: 30px;'>{{ material.course_name }}</span>
+                <p>{{ material.prof_name }}</p>
             </div>
-            <div class='describe' style='padding-top: 5px;'>SMT_203_WEEK_5_LAB_4.pdf</div>
+            <div class='describe' style='padding-top: 5px;'>{{ material.file_name }}</div>
             <div class="utility-info detail" style="top: 10px; right: 22px;">
                 <ul class="utility-list">
                 <li class="comments" style="padding-left: 3px;color: black;">
                     <i class="fas fa-star"></i>12
                 </li>
                 <li class="date" style="color: black;">
-                    <i class="fas fa-calendar-plus"></i>03.12.2015
+                    <i class="fas fa-calendar-plus"></i>{{ material.upload_date }}
                 </li>
                 </ul>
             </div><!-- /.utility-info -->
             <div class = 'dlcontent' style='margin-left:0px; float: right; margin-top: -15px; margin-right: 20px;'>
-                <span><a href='{{ common.base }}download' class="fas fa-download" style='padding-top: 8px; padding-left: 11px;'></a></span>
+                <span><a href='{{ common.base }}download/{{ material.file_id }}/' class="fas fa-download" style='padding-top: 8px; padding-left: 11px;'></a></span>
             </div>
         </div>
 
         <div class='content' style="height: 430px; background-color: #f8fffdcc;">
             <div class="feedbacks">
+                {% for review in material.reviews %}
                 <div class='comment' > 
-                    <i class="fas fa-comments"></i>03.12.2015
-                    <p>Hello</p>
+                    <i class="fas fa-comments"></i>{{ review.review_date }}
+                    <p>{{ review.review }}</p>
                 </div>
-                <div class='comment' > 
+                {% endfor %}
+                <!-- <div class='comment' > 
                     <i class="fas fa-comments"></i>03.12.2015
                     <p>Hello Bitches this is pretty</p>
                 </div>
@@ -98,7 +100,7 @@
                 <div class='comment' > 
                     <i class="fas fa-comments"></i>03.12.2015
                     <p>Hello Bitches this is pretty good notes</p>
-                </div>
+                </div> -->
                 <!-- <p  class='comment'>Hello Bitches this is pretty good notes</p>
                 <p  class='comment'></p>
                 <p  class='comment'></p>

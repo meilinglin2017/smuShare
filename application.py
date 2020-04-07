@@ -4,7 +4,6 @@ from werkzeug.utils import secure_filename
 from pprint import pprint
 import os
 from s3bucket import s3_upload_file, s3_get_link
-from io import StringIO
 
 app = Flask(__name__)
 app.debug = True
@@ -156,11 +155,17 @@ def uploadFile():
         db.session.commit()
         db.session.refresh(new_file)
 
+        # Save file to web directory for boto3 to read
         s3_filename = new_file.id + "_" + file_name
         input_file.save(s3_filename)
-        s3_upload_file(s3_filename, open(s3_filename, "rb"))
+        s3_file = open(s3_filename, "rb")
+        s3_upload_file(s3_filename, s3_file)
         new_file.file_path = s3_get_link(s3_filename)
         db.session.commit()
+
+        # Remove file from web directory
+        s3_file.close()
+        os.remove(s3_filename)
 
         return jsonify("{} was created".format(new_file)), 201
     except KeyError:
@@ -174,10 +179,6 @@ def getRatingAvg(reviews):
     for review in reviews:
         total += review['rating']
     return total/len(reviews)
-
-#@app.route("/uploadFile/", methods = ['POST'])
-#def uploadFile():
-#    pass
 
 @app.route("/uploadReview/", methods = ['POST'])
 def uploadReview():
@@ -312,9 +313,12 @@ def login():
 def home():
     return render_template('main.html', common = common_var)
 
-@app.route("/detail/")
-def detail():
-    return render_template('detail.html', common = common_var)
+@app.route("/detail/<int:file_id>/")
+def detail(file_id):
+    material = Material.query.get(file_id)
+    if material is None:
+        return render_template('main.html', common = common_var)
+    return render_template('detail.html', common = common_var, material = material.serialize())
 
 @app.route("/upload/", methods=["GET","POST"])
 def upload():
@@ -349,9 +353,12 @@ def upload():
 
     return render_template('upload-new.html', common = common_var, profList = profList, courseDict = courseDict)
 
-@app.route("/download/")
-def download():
-    return render_template('download.html', common = common_var)
+@app.route("/download/<int:file_id>/")
+def download(file_id):
+    material = Material.query.get(file_id)
+    if material is None:
+        return render_template('main.html', common = common_var)
+    return render_template('download.html', common = common_var, material = material.serialize())
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -47,17 +47,17 @@
             </nav>
         </div>
         <div class='dlmaintext'>
-            <h3 class="fixed">SMT 203</h3>
+            <h3 class="fixed">{{ material.course_code }}</h3>
             <div class="word">
-                <span style='font-size: 30px;'>Smart City Systems And Management</span>
+                <span style='font-size: 30px;'>{{ material.course_name }}</span>
             </div>
-            <div class='describe'>SMT_203_WEEK_5_LAB_4.pdf</div>
+            <div class='describe'>{{ material.file_name }}</div>
         </div>
         <div class = 'dlcontent'>
-            <a href='#'>Download</a>
+            <a href='{{ material.file_path }}'>Download</a>
         </div>
         <div class = 'backbtn'>
-            <a href='{{ common.base }}detail'>Back</a>
+            <a href='{{ common.base }}detail/{{ file_id }}/'>Back</a>
         </div>
 
         

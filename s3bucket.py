@@ -10,7 +10,8 @@ with open('s3_access_key.json') as f:
     s3_access_key_id = data["s3_access_key_id"]
     s3_secret_access_key = data["s3_secret_access_key"]
 
-s3_resource = boto3.resource('s3', aws_access_key_id = s3_access_key_id, aws_secret_access_key = s3_secret_access_key)
+# s3_resource = boto3.resource('s3', aws_access_key_id = s3_access_key_id, aws_secret_access_key = s3_secret_access_key)
+s3_resource = boto3.resource('s3')
 bucket_name = "elasticbeanstalk-us-west-2-876671248402"
 bucket_region = "us-west-2"
 bucket = s3_resource.Bucket(bucket_name)

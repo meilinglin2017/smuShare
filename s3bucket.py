@@ -5,10 +5,10 @@
 #  - if there is changes to file name, need to process dl_link to return original filename
 import boto3, json
 
-with open('s3_access_key.json') as f:
-    data = json.load(f)
-    s3_access_key_id = data["s3_access_key_id"]
-    s3_secret_access_key = data["s3_secret_access_key"]
+# with open('s3_access_key.json') as f:
+#     data = json.load(f)
+#     s3_access_key_id = data["s3_access_key_id"]
+#     s3_secret_access_key = data["s3_secret_access_key"]
 
 # s3_resource = boto3.resource('s3', aws_access_key_id = s3_access_key_id, aws_secret_access_key = s3_secret_access_key)
 s3_resource = boto3.resource('s3')

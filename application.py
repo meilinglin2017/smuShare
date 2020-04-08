@@ -142,7 +142,7 @@ def uploadFile():
         course_code = request.json['course_code']
         course_name = request.json['course_name']
         course_term = request.json['course_term']
-        input_file = request.json['input_file']
+        input_file = request.files['input_file']
 
         user_id = request.json['user_id']
         course_id = request.json['course_id']
@@ -197,7 +197,7 @@ def uploadReview():
     user_id = request.json['user_id']
     review = request.json['review']
     rating = request.json['rating']
-
+    print(file_id, user_id)
     try:
         filez = Material.query.filter_by(file_id=file_id).first()
         if filez is None:
@@ -349,7 +349,9 @@ def uploading():
         "course_term": course_term
     }
     # File details
-    params['input_file'] = input_file
+    datum = {
+        "input_file": input_file
+    }
     params['file_name'] = input_file.filename
 
     # Prof and Course details
@@ -380,7 +382,7 @@ def uploading():
     params['course_id'] = course.course_id
     params['user_id'] = common_var['session_user'].user_id
 
-    req = requests.post(common_var['base'] + 'uploadFile/', json = params)
+    req = requests.post(common_var['base'] + 'uploadFile/', json = params, files = datum)
     return req.text
 
 @app.route("/reviewing/<int:file_id>/", methods = ["POST"])
@@ -399,7 +401,7 @@ def reviewing(file_id):
         "rating" : rating
     }
     req = requests.post(common_var['base'] + "uploadReview/", json = params)
-    return req.text
+    return redirect(common_var['base'] + "review/list/" + user_id)
 
 ### FrontEnd Routes ###
 @app.route("/")
@@ -418,32 +420,48 @@ def login():
 
 @app.route("/home/")
 def home():
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     materials = [m.serialize() for m in Material.query.all()]
-    return render_template('main.html', common = common_var, materials = materials)
+    return render_template('main.html', common = common_var, materials = materials, user_id = user_id)
 
 @app.route("/detail/<int:file_id>/")
 def detail(file_id):
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     material = Material.query.get(file_id)
     if material is None:
         return redirect(common_var['base'] + 'home')
-    return render_template('detail.html', common = common_var, material = material.serialize())
+    return render_template('detail.html', common = common_var, material = material.serialize(), user_id = user_id)
 
 @app.route("/upload/")
 def upload_page():
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     profList = [p.prof_name for p in Prof.query.all()]
     courseDict = {}
     courses = Course.query.all()
     for course in courses:
         courseDict[course.course_code] = course.course_name
 
-    return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict)
+    return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, user_id = user_id)
 
 @app.route("/download/<int:file_id>/")
 def download_page(file_id):
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     material = Material.query.get(file_id)
     if material is None:
         return redirect(common_var['base'] + 'home')
-    return render_template('download.html', common = common_var, material = material.serialize())
+    return render_template('download.html', common = common_var, material = material.serialize(), user_id = user_id)
 
 @app.route("/review/list/<int:user_id>/")
 def review_list(user_id):
@@ -451,14 +469,18 @@ def review_list(user_id):
     if user is None:
         return redirect(common_var['base'] + 'home')
     
-    return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads])
+    return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads], user_id = user.user_id)
 
 @app.route("/review/<int:file_id>/")
 def review_file(file_id):
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     material = Material.query.get(file_id)
     if Material is None:
         return redirect(common_var['base'] + 'home')
-    return render_template('reviewform.html', common = common_var, material = material.serialize())
+    return render_template('reviewform.html', common = common_var, material = material.serialize(), user_id = user_id)
 
 if __name__ == '__main__':
     app.run(debug=True)

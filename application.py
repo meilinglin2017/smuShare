@@ -48,7 +48,8 @@ common_var = {
 
 # sample_user = User(
 #     username = "ilovesmt203",
-#     password = "abcdefgh"
+#     password = "abcdefgh",
+#     email = "smtisfun@smu.edu.sg"
 # )
 
 # db.session.add(sample_user)
@@ -259,15 +260,15 @@ def check_user(form_action):
     error_msg = []
     if form_action == 'register':
         prev_html = 'register.html'
-        if set(('email', 'username', 'password', 'password2')) <= set(request.json):
+        if set(('email', 'username', 'password', 'password2')) <= set(request.form):
             auth_url = common_var['base'] + "authenticate/register/"
             error_msg.append("Some fields are empty")
             return render_template('register.html', common = common_var, auth_url = auth_url, errors = error_msg)
 
-        email = request.json['email']
-        username = request.json['username']
-        password = request.json['password']
-        password2 = request.json['password2']
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        password2 = request.form['password2']
 
         user = User.query.filter_by(username = username).first()
         if user is not None:
@@ -286,13 +287,13 @@ def check_user(form_action):
     
     if form_action == 'login':
         prev_html = 'login.html'
-        if set(('username', 'password')) <= set(request.json):
+        if set(('username', 'password')) <= set(request.form):
             auth_url = common_var['base'] + "authenticate/login/"
             error_msg.append("Some fields are empty")
             return render_template('login.html', common = common_var, auth_url = auth_url, errors = error_msg)
         
-        username = request.json['username']
-        password = request.json['password']
+        username = request.form['username']
+        password = request.form['password']
 
         user = User.query.filter_by(username = username).first()
         if '@' in username:
@@ -303,6 +304,10 @@ def check_user(form_action):
         elif password != user.password:
             error_msg.append("Password is incorrect")
 
+        # No error so save user to session
+        if error_msg == []:
+            common_var['session_user'] = user
+            
     if error_msg != []:
         return render_template(prev_html, common = common_var, auth_url = auth_url, errors = error_msg)
     return redirect(common_var['home'])
@@ -330,18 +335,42 @@ def uploading():
         return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
 
     # file_name = request.json['file_name']
-    # prof_name = request.json['prof_name']
-    # course_code = request.json['course_code']
-    # course_name = request.json['course_name']
     # course_term = request.json['course_term']
 
     # user_id = request.json['user_id']
     # course_id = request.json['course_id']
     # prof_id = request.json['prof_id']
 
-    params = request.json
+    params = request.form
+    # File details
     params['input_file'] = input_file
     params['file_name'] = input_file.filename
+
+    # Prof and Course details
+    prof_name = request.form['prof_name']
+    course_code = request.form['course_code']
+    course_name = request.form['course_name']
+
+    prof = Prof.query.filter_by(prof_name = prof_name)
+    course = Course.query.filter_by(course_code = course_code)
+
+    if prof is None:
+        new_prof = Prof(prof_name = prof_name)
+        db.session.add(new_prof)
+        db.session.commit()
+        db.session.refresh(new_prof)
+        prof = new_prof
+    if course is None:
+        new_course = Course(course_code = course_code, course_name = course_name)
+        db.session.add(new_course)
+        db.session.commit()
+        db.session.refresh(new_course)
+        course = new_course
+    if prof not in course.professors:
+        course.professors.append(prof)
+
+    params['prof_id'] = prof.prof_id
+    params['course_id'] = course.course_id
 
     req = requests.post(common_var['base'] + 'uploadFile/', params = params)
     return req.text

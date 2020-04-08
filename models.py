@@ -94,8 +94,6 @@ class Review(db.Model):
             'review' : self.review,
             'review_date' : self.review_date
         }
-    
-
 
 # User Info db table
 class User(db.Model):
@@ -152,7 +150,7 @@ class Course(db.Model):
             'course_id': self.course_id,
             'course_code': self.course_code,
             'course_name': self.course_name,
-            'professors': [p.name for p in self.professors]
+            'professors': [p.prof_name for p in self.professors]
         }
 
 # Prof Info db table
@@ -160,14 +158,14 @@ class Prof(db.Model):
     __tablename__ = 'prof_info'
 
     prof_id = db.Column(db.Integer, primary_key = True)
-    prof_email = db.Column(db.String(80), unique = True, nullable = False)
+    # prof_email = db.Column(db.String(80), unique = True, nullable = False)
     prof_name = db.Column(db.String(80), unique = True, nullable = False)
 
     notes = db.relationship('Material', back_populates = 'professors', uselist = True, lazy = True)
     courses = db.relationship('Course', secondary = course_prof_table, back_populates = 'professors', lazy = True)
 
-    def __init__(self, prof_email, prof_name):
-        self.prof_email = prof_email
+    def __init__(self, prof_name):
+        # self.prof_email = prof_email
         self.prof_name = prof_name
 
     def __repr__(self):
@@ -176,7 +174,7 @@ class Prof(db.Model):
     def serialize(self):
         return {
             'prof_id' : self.prof_id,
-            'prof_email': self.prof_email,
+            # 'prof_email': self.prof_email,
             'prof_name' : self.prof_name,
-            'courses' : [c.course for c in self.courses]
+            'courses' : [c.course_name for c in self.courses]
         }

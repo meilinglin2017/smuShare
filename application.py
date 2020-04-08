@@ -36,8 +36,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-# base_url = "http://localhost:5000/"
-base_url = "http://smushare.ml/"
+base_url = "http://localhost:5000/"
+# base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -394,14 +394,34 @@ def reviewing(file_id):
     review = request.form['review']
     user_id = common_var['session_user'].user_id
 
-    params = {
+    json = {
         "file_id" : file_id,
         "user_id" : user_id,
         "review" : review,
-        "rating" : rating
+        "rating" : int(rating)
     }
-    req = requests.post(common_var['base'] + "uploadReview/", json = params)
-    return redirect(common_var['base'] + "review/list/" + user_id)
+    print(json)
+    review_url = common_var['base'] + "uploadReview/"
+    print(review_url)
+    req = requests.post(review_url, json = json)
+    return jsonify("Upload success")
+    # return redirect(common_var['base'] + "review/list/" + user_id)
+
+@app.route("/test/")
+def testets():
+    json = {
+        "file_id" : 2,
+        "user_id" : 1,
+        "review" : "Request is a bij",
+        "rating" : 5
+    }
+    print(json)
+    review_url = common_var['base'] + "uploadReview/"
+    print(review_url)
+    req_session = requests.Session()
+    req = req_session.post(review_url, json = json)
+    print(req)
+    return req.text
 
 ### FrontEnd Routes ###
 @app.route("/")

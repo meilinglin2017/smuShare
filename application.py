@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from pprint import pprint
 import os
 from s3bucket import s3_upload_file, s3_get_link
+import requests
 
 app = Flask(__name__)
 app.debug = True
@@ -135,7 +136,7 @@ def uploadFile():
         course_code = request.json['course_code']
         course_name = request.json['course_name']
         course_term = request.json['course_term']
-        input_file = request.files['input_file']
+        input_file = request.json['input_file']
 
         user_id = request.json['user_id']
         course_id = request.json['course_id']
@@ -270,6 +271,15 @@ def check_user(form_action):
             error_msg.append("Username already exist")
         if password != password2:
             error_msg.append("Passwords does not match")
+        
+        # No error add user to database
+        if error_msg == []:
+            try:
+                new_user = User(username = username, password = password, email = email)
+                db.session.add(new_user)
+                db.session.commit()
+            except Exception as e:
+                return str(e)
     
     if form_action == 'login':
         prev_html = 'login.html'
@@ -293,6 +303,45 @@ def check_user(form_action):
     if error_msg != []:
         return render_template(prev_html, common = common_var, auth_url = auth_url, errors = error_msg)
     return redirect(common_var['home'])
+
+@app.route("/uploading/", methods = ['POST'])
+def uploading():
+    profList = [p.prof_name for p in Prof.query.all()]
+    courseDict = {}
+    courses = Course.query.all()
+    for course in courses:
+        courseDict[course.course_code] = course.course_name
+    
+    error_msg = []
+    if 'input_file' not in request.files:
+        error_msg.append("No file is selected")
+
+    if set(('prof_name', 'course_code', 'course_name', 'course_term',
+            'input_file', 'user_id', 'course_id', 'prof_id')) <= set(request.json):
+        error_msg.append("Some fields are empty")
+        return render_template('upload-new.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
+    
+    input_file = request.files['input_file']
+    if input_file.filename == '':
+        error_msg.append("No file is selected")
+        return render_template('upload-new.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
+
+    # file_name = request.json['file_name']
+    # prof_name = request.json['prof_name']
+    # course_code = request.json['course_code']
+    # course_name = request.json['course_name']
+    # course_term = request.json['course_term']
+
+    # user_id = request.json['user_id']
+    # course_id = request.json['course_id']
+    # prof_id = request.json['prof_id']
+
+    params = request.json
+    params['input_file'] = input_file
+    params['file_name'] = input_file.filename
+
+    req = requests.post(common_var['base'] + 'uploadFile/', params = params)
+    return req.text
 
 ### FrontEnd Routes ###
 @app.route("/")
@@ -322,29 +371,6 @@ def detail(file_id):
 
 @app.route("/upload/", methods=["GET","POST"])
 def upload():
-    if request.method == "POST":
-        if request.files:
-
-            ## Debug method - check Ubuntu
-            print("below is locals")
-            file_name = request.form['file_name']
-            print(file_name)
-            pprint(locals())
-            print("above is locals")
-
-            ## Upload of file
-            image = request.files["image"]
-            image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
-            
-            ## append to Material Database
-            try:
-                new_material = Material(file_name=file_name, course_code='SMT203',course_name='Smart Cities', prof_name='Hwee Xian', course_term='AY19/20S2', rating_avg=4.5, file_path='zxc', reviews=None)
-                db.session.add(new_material)
-                db.session.commit()
-                return jsonify('{} was created'.format(new_material))
-            except Exception as e:
-                return (str(e))
-
     profList = [p.prof_name for p in Prof.query.all()]
     courseDict = {}
     courses = Course.query.all()

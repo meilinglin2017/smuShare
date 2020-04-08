@@ -55,25 +55,25 @@
             <div class='describe'>Thank you for contributing to the community!</div>
         </div>
         <div class = 'content animate animated fadeInUp' style="height: 430px;  font-family: Rosario;">
-            <form class="upload-form" action="" method="post">
+            <form class="upload-form" action="{{ common.base }}uploading/" method="post">
                 <h5 style="padding-bottom: 15px;">Please enter the fields below</h5>
                 
-                <label for="field2">
-                <span>Course Code</span><input type="text" name="field2" required="true" list="courseCodes" oninput="getCourseName(this.value)"/>
+                <label for="course_code">
+                <span>Course Code</span><input type="text" name="course_code" required="true" list="courseCodes" oninput="getCourseName(this.value)"/>
                 <datalist id="courseCodes">
                     {% for code in courseDict.keys() %}
                         <option value="{{ code }}">
                     {% endfor %}
                 </datalist>
                 </label>
-                <label for="field3">
-                <span>Course Name</span><input type="text" name="field3" required="true" id="courseName" />
+                <label for="course_name">
+                <span>Course Name</span><input type="text" name="course_name" required="true" id="courseName" />
                 </label>
-                <label for="field4">
-                    <span>Course Semester</span><input type="text" name="field3" required="true" />
+                <label for="course_term">
+                    <span>Course Semester</span><input type="text" name="course_term" required="true" />
                     </label>
-                <label for="field4">
-                <span>Professor Name</span><input type="text" name="field4" required="true" list="profNames" />
+                <label for="prof_name">
+                <span>Professor Name</span><input type="text" name="prof_name" required="true" list="profNames" />
                 <datalist id="profNames">
                     {% for prof in profList %}
                         <option value="{{ prof }}">

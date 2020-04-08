@@ -163,7 +163,7 @@ def uploadFile():
         db.session.refresh(new_file)
 
         # Save file to web directory for boto3 to read
-        s3_filename = new_file.id + "_" + file_name
+        s3_filename = new_file.file_id + "_" + file_name
         input_file.save(s3_filename)
         s3_file = open(s3_filename, "rb")
         s3_upload_file(s3_filename, s3_file)
@@ -312,7 +312,7 @@ def check_user(form_action):
 
         # No error so save user to session
         if error_msg == []:
-            common_var['session_user'] = user
+            common_var['curr_user'] = user
             
     if error_msg != []:
         return render_template(prev_html, common = common_var, auth_url = auth_url, errors = error_msg)
@@ -328,7 +328,7 @@ def uploading():
     
     error_msg = []
 
-    if 'session_user' not in common_var:
+    if 'curr_user' not in common_var:
         error_msg.append("Login to upload files!")
 
     if 'input_file' not in request.files:
@@ -338,24 +338,16 @@ def uploading():
         error_msg.append("Some fields are empty")
         return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
     
+    # File details
     input_file = request.files['input_file']
     if input_file.filename == '':
         error_msg.append("No file is selected")
         return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
-
-    course_term = request.form['course_term']
-
-    params = {
-        "course_term": course_term
-    }
-    # File details
-    datum = {
-        "input_file": input_file
-    }
-    params['file_name'] = input_file.filename
+    file_name = input_file.filename
 
     # Prof and Course details
     prof_name = request.form['prof_name']
+    course_term = request.form['course_term']
     course_code = request.form['course_code']
     course_name = request.form['course_name']
 
@@ -378,21 +370,50 @@ def uploading():
         course.professors.append(prof)
         db.session.commit()
 
-    params['prof_id'] = prof.prof_id
-    params['course_id'] = course.course_id
-    params['user_id'] = common_var['session_user'].user_id
+    try:
+        user_id = common_var['curr_user'].user_id
+        course_id = course.course_id
+        prof_id = prof.prof_id
 
-    req = requests.post(common_var['base'] + 'uploadFile/', json = params, files = datum)
-    return req.text
+        new_file = Material(
+            course_code = course_code,
+            course_name = course_name,
+            prof_name = prof_name,
+            course_term = course_term,
+            file_name = file_name,
+            file_path = "thisisatempurl",
+            user_id = user_id,
+            course_id = course_id,
+            prof_id = prof_id)
+        db.session.add(new_file)
+        db.session.commit()
+        db.session.refresh(new_file)
+
+        # Save file to web directory for boto3 to read
+        s3_filename = str(new_file.file_id) + "_" + file_name
+        input_file.save(s3_filename)
+        s3_file = open(s3_filename, "rb")
+        s3_upload_file(s3_filename, s3_file)
+        new_file.file_path = s3_get_link(s3_filename)
+        db.session.commit()
+
+        # Remove file from web directory
+        s3_file.close()
+        os.remove(s3_filename)
+
+        # req = requests.post(common_var['base'] + 'uploadFile/', json = params, files = datum)
+        return jsonify("Success!!!")
+    except Exception as e:
+        return str(e)
 
 @app.route("/reviewing/<int:file_id>/", methods = ["POST"])
 def reviewing(file_id):
-    if 'session_user' not in common_var:
+    if 'curr_user' not in common_var:
         return redirect(common_var['base'] + "login/")
 
     rating = request.form['radio-star']
     review = request.form['review']
-    user_id = common_var['session_user'].user_id
+    user_id = common_var['curr_user'].user_id
 
     json = {
         "file_id" : file_id,
@@ -409,19 +430,27 @@ def reviewing(file_id):
 
 @app.route("/test/")
 def testets():
-    json = {
-        "file_id" : 2,
-        "user_id" : 1,
-        "review" : "Request is a bij",
-        "rating" : 5
-    }
-    print(json)
-    review_url = common_var['base'] + "uploadReview/"
-    print(review_url)
-    req_session = requests.Session()
-    req = req_session.post(review_url, json = json)
-    print(req)
-    return req.text
+    
+    file_id = 2
+    user_id = 1
+    review = "hell o world"
+    rating = 5
+    print(file_id, user_id)
+    try:
+        filez = Material.query.filter_by(file_id=file_id).first()
+        if filez is None:
+            return ('{} does not exist'.format(filez))
+        user = User.query.get(user_id)
+        if user is None:
+            return ('{} does not exist'.format(user))
+        new_review = Review(rating=rating, review=review, file_id=file_id, user_id=user_id)
+        db.session.add(new_review)
+        db.session.commit()
+
+        return jsonify('{} score and the review was created for file ID {}'.format(rating,file_id)), 201
+    except Exception as e:
+        return (str(e)) 
+    return redirect(common_var['home'])
 
 ### FrontEnd Routes ###
 @app.route("/")
@@ -440,19 +469,19 @@ def login():
 
 @app.route("/home/")
 def home():
-    if 'session_user' not in common_var:
+    if 'curr_user' not in common_var:
         user_id = 0
     else:
-        user_id = common_var['session_user'].user_id
+        user_id = common_var['curr_user'].user_id
     materials = [m.serialize() for m in Material.query.all()]
     return render_template('main.html', common = common_var, materials = materials, user_id = user_id)
 
 @app.route("/detail/<int:file_id>/")
 def detail(file_id):
-    if 'session_user' not in common_var:
+    if 'curr_user' not in common_var:
         user_id = 0
     else:
-        user_id = common_var['session_user'].user_id
+        user_id = common_var['curr_user'].user_id
     material = Material.query.get(file_id)
     if material is None:
         return redirect(common_var['base'] + 'home')
@@ -460,10 +489,10 @@ def detail(file_id):
 
 @app.route("/upload/")
 def upload_page():
-    if 'session_user' not in common_var:
+    if 'curr_user' not in common_var:
         user_id = 0
     else:
-        user_id = common_var['session_user'].user_id
+        user_id = common_var['curr_user'].user_id
     profList = [p.prof_name for p in Prof.query.all()]
     courseDict = {}
     courses = Course.query.all()
@@ -474,10 +503,10 @@ def upload_page():
 
 @app.route("/download/<int:file_id>/")
 def download_page(file_id):
-    if 'session_user' not in common_var:
+    if 'curr_user' not in common_var:
         user_id = 0
     else:
-        user_id = common_var['session_user'].user_id
+        user_id = common_var['curr_user'].user_id
     material = Material.query.get(file_id)
     if material is None:
         return redirect(common_var['base'] + 'home')
@@ -493,10 +522,10 @@ def review_list(user_id):
 
 @app.route("/review/<int:file_id>/")
 def review_file(file_id):
-    if 'session_user' not in common_var:
+    if 'curr_user' not in common_var:
         user_id = 0
     else:
-        user_id = common_var['session_user'].user_id
+        user_id = common_var['curr_user'].user_id
     material = Material.query.get(file_id)
     if Material is None:
         return redirect(common_var['base'] + 'home')

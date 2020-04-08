@@ -108,13 +108,13 @@ def allowed_file(filename):
 def searchFile():
     materials = Material.query.filter()
     if 'file_name' in request.args:
-        materials = materials.filter(Material.file_name.like(request.args.get('file_name')))
+        materials = materials.filter(Material.file_name.like    (request.args.get('file_name')))
     if 'prof_name' in request.args:
-        materials = materials.filter(Material.prof_name.like(request.args.get('prof_name')))
+        materials = materials.filter(Material.prof_name.like    (request.args.get('prof_name')))
     if 'course_name' in request.args:
-        materials = materials.filter(Material.course_name.like(request.args.get('course_name')))
+        materials = materials.filter(Material.course_name.like  (request.args.get('course_name')))
     if 'course_code' in request.args:
-        materials = materials.filter(Material.course_code.like(request.args.get('course_code')))
+        materials = materials.filter(Material.course_code.like  (request.args.get('course_code')))
 
     return jsonify([m.serialize() for m in materials]), 200
     
@@ -433,17 +433,21 @@ def reviewing(file_id):
     review = request.form['review']
     user_id = common_var['curr_user'].user_id
 
-    json = {
-        "file_id" : file_id,
-        "user_id" : user_id,
-        "review" : review,
-        "rating" : int(rating)
-    }
-    print(json)
-    review_url = common_var['base'] + "uploadReview/"
-    print(review_url)
-    req = requests.post(review_url, json = json)
-    return redirect(common_var['base'] + "review/list/" + user_id)
+    try:
+        filez = Material.query.filter_by(file_id=file_id).first()
+        if filez is None:
+            return ('{} does not exist'.format(filez))
+        user = User.query.get(user_id)
+        if user is None:
+            return ('{} does not exist'.format(user))
+        new_review = Review(rating=rating, review=review, file_id=file_id, user_id=user_id)
+        db.session.add(new_review)
+        db.session.commit()
+
+        return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads], user_id = user_id)
+    except Exception as e:
+        return (str(e)) 
+    
 
 ### FrontEnd Routes ###
 @app.route("/")
@@ -497,15 +501,19 @@ def upload_page():
 @app.route("/download/<int:file_id>/")
 def download_page(file_id):
     if 'curr_user' not in common_var:
-        user_id = 0
+        return redirect(common_var['base'] + 'login')
     else:
         user_id = common_var['curr_user'].user_id
     material = Material.query.get(file_id)
     if material is None:
         return redirect(common_var['base'] + 'home')
+
+    user = Material.query.get(user_id)
+    user.downloads.append(material)
+    db.session.commit()
     return render_template('download.html', common = common_var, material = material.serialize(), user_id = user_id)
 
-@app.route("/review/list/<int:user_id>/")
+@app.route("/review/list/<int:user_id>/", defaults = {'user_id':0})
 def review_list(user_id):
     user = User.query.get(user_id)
     if user is None:

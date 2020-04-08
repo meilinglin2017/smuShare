@@ -928,6 +928,12 @@ input[type=submit]{
 
 .search__submit{
     border: 1px solid transparent;
+    background-color: transparent;
+}
+
+.search__submit:hover{
+    color:#38d39f;
+    background-color: transparent;
 }
 
 .comment{

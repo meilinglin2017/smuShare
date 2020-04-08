@@ -142,7 +142,7 @@ def uploadFile():
         course_code = request.json['course_code']
         course_name = request.json['course_name']
         course_term = request.json['course_term']
-        input_file = request.json['input_file']
+        input_file = request.files['input_file']
 
         user_id = request.json['user_id']
         course_id = request.json['course_id']
@@ -349,7 +349,9 @@ def uploading():
         "course_term": course_term
     }
     # File details
-    params['input_file'] = input_file
+    datum = {
+        "input_file": input_file
+    }
     params['file_name'] = input_file.filename
 
     # Prof and Course details
@@ -380,7 +382,7 @@ def uploading():
     params['course_id'] = course.course_id
     params['user_id'] = common_var['session_user'].user_id
 
-    req = requests.post(common_var['base'] + 'uploadFile/', json = params)
+    req = requests.post(common_var['base'] + 'uploadFile/', json = params, files = datum)
     return req.text
 
 @app.route("/reviewing/<int:file_id>/", methods = ["POST"])

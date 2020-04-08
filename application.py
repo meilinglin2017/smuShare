@@ -25,8 +25,8 @@ port = 5432
 dbName = 'postgres' #'postgres' - default name given by RDS is postgres
 driver = 'postgresql+psycopg2://'
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(username, password, host, port, dbName)
-app.config['SQLALCHEMY_DATABASE_URI'] = driver + os.environ[username] + ':' + os.environ[password]  + '@' + os.environ[host] + ':' + os.environ[port]  + '/' + os.environ[dbName]
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(username, password, host, port, dbName)
+# app.config['SQLALCHEMY_DATABASE_URI'] = driver + os.environ[username] + ':' + os.environ[password]  + '@' + os.environ[host] + ':' + os.environ[port]  + '/' + os.environ[dbName]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

@@ -36,8 +36,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-# base_url = "http://localhost:5000/"
-base_url = "http://smushare.ml/"
+base_url = "http://localhost:5000/"
+# base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -260,8 +260,8 @@ def check_user(form_action):
     error_msg = []
     if form_action == 'register':
         prev_html = 'register.html'
-        if set(('email', 'username', 'password', 'password2')) <= set(request.form):
-            auth_url = common_var['base'] + "authenticate/register/"
+        auth_url = common_var['base'] + "authenticate/register/"
+        if set(('email', 'username', 'password', 'password2')) > set(request.form):
             error_msg.append("Some fields are empty")
             return render_template('register.html', common = common_var, auth_url = auth_url, errors = error_msg)
 
@@ -287,8 +287,8 @@ def check_user(form_action):
     
     if form_action == 'login':
         prev_html = 'login.html'
-        if set(('username', 'password')) <= set(request.form):
-            auth_url = common_var['base'] + "authenticate/login/"
+        auth_url = common_var['base'] + "authenticate/login/"
+        if set(('username', 'password')) > set(request.form):
             error_msg.append("Some fields are empty")
             return render_template('login.html', common = common_var, auth_url = auth_url, errors = error_msg)
         
@@ -325,7 +325,7 @@ def uploading():
         error_msg.append("No file is selected")
 
     if set(('prof_name', 'course_code', 'course_name', 'course_term',
-            'input_file', 'user_id', 'course_id', 'prof_id')) <= set(request.json):
+            'input_file', 'user_id', 'course_id', 'prof_id')) > set(request.json):
         error_msg.append("Some fields are empty")
         return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
     

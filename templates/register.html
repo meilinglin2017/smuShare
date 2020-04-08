@@ -65,6 +65,13 @@
 
                     <a class='link' href ='{{ common.base }}login'>Already have an account? Login</a>
                     <input type='submit' class = 'btn' value = 'Register' style='font-family: Rosario;'>
+                    <div style="color: red;">
+                        {% if errors != [] %}
+                            {% for error in errors %}
+                                <strong>*{{ error }}*</strong></br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 </form>
 
             </div>

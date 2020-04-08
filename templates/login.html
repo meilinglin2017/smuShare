@@ -47,10 +47,16 @@
                         <a class='link' href ='{{ common.base }}register'>Yet to register? Sign Up Now!</a>
                     </div>
 
-
                     <input type='submit' class = 'btn' value = 'Login' style='font-family: Rosario;'>
+                    <div style="color: red;">
+                        {% if errors != [] %}
+                            {% for error in errors %}
+                                <strong>*{{ error }}*</strong></br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 </form>
-
+            
             </div>
         </div>
         <script type='text/javascript' src="{{ url_for('static', filename='js/main.js') }}"></script>

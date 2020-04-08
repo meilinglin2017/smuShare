@@ -163,7 +163,7 @@ def uploadFile():
         db.session.refresh(new_file)
 
         # Save file to web directory for boto3 to read
-        s3_filename = new_file.file_id + "_" + file_name
+        s3_filename = str(new_file.file_id) + "_" + file_name
         input_file.save(s3_filename)
         s3_file = open(s3_filename, "rb")
         s3_upload_file(s3_filename, s3_file)
@@ -402,7 +402,8 @@ def uploading():
         os.remove(s3_filename)
 
         # req = requests.post(common_var['base'] + 'uploadFile/', json = params, files = datum)
-        return jsonify("Success!!!")
+        success_msg = "Congratulations! Your file had been uploaded. Feel free to upload another one!"
+        return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, user_id = user_id, success = success_msg)
     except Exception as e:
         return str(e)
 
@@ -425,32 +426,7 @@ def reviewing(file_id):
     review_url = common_var['base'] + "uploadReview/"
     print(review_url)
     req = requests.post(review_url, json = json)
-    return jsonify("Upload success")
-    # return redirect(common_var['base'] + "review/list/" + user_id)
-
-@app.route("/test/")
-def testets():
-    
-    file_id = 2
-    user_id = 1
-    review = "hell o world"
-    rating = 5
-    print(file_id, user_id)
-    try:
-        filez = Material.query.filter_by(file_id=file_id).first()
-        if filez is None:
-            return ('{} does not exist'.format(filez))
-        user = User.query.get(user_id)
-        if user is None:
-            return ('{} does not exist'.format(user))
-        new_review = Review(rating=rating, review=review, file_id=file_id, user_id=user_id)
-        db.session.add(new_review)
-        db.session.commit()
-
-        return jsonify('{} score and the review was created for file ID {}'.format(rating,file_id)), 201
-    except Exception as e:
-        return (str(e)) 
-    return redirect(common_var['home'])
+    return redirect(common_var['base'] + "review/list/" + user_id)
 
 ### FrontEnd Routes ###
 @app.route("/")

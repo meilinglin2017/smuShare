@@ -53,6 +53,11 @@
                 <span>Upload</span>
             </div>
             <div class='describe'>Thank you for contributing to the community!</div>
+            <div style="color: green;">
+                {% if success != "" %}
+                <strong>*{{ success }}*</strong>
+                {% endif %}
+            </div>
         </div>
         <div class = 'content animate animated fadeInUp' style="height: 430px;  font-family: Rosario;">
             <form class="upload-form" action="{{ common.base }}uploading/" method="post" enctype="multipart/form-data">

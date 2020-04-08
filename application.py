@@ -197,7 +197,7 @@ def uploadReview():
     user_id = request.json['user_id']
     review = request.json['review']
     rating = request.json['rating']
-
+    print(file_id, user_id)
     try:
         filez = Material.query.filter_by(file_id=file_id).first()
         if filez is None:
@@ -399,7 +399,7 @@ def reviewing(file_id):
         "rating" : rating
     }
     req = requests.post(common_var['base'] + "uploadReview/", json = params)
-    return req.text
+    return redirect(common_var['base'] + "review/list/" + user_id)
 
 ### FrontEnd Routes ###
 @app.route("/")

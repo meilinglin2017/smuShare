@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from pprint import pprint
 import os
 from s3bucket import s3_upload_file, s3_get_link
+import psycopg2
 
 app = Flask(__name__)
 app.debug = True
@@ -22,8 +23,10 @@ password = 'smtpassword'
 host = 'smushare.cz4bsejequqa.us-west-2.rds.amazonaws.com' #'aa77fccri7bpdt.cz4bsejequqa.us-west-2.rds.amazonaws.com' 'aa77fccri7bpdt.cz4bsejequqa.us-west-2.rds.amazonaws.com'
 port = 5432
 dbName = 'postgres' #'postgres' - default name given by RDS is postgres
+driver = 'postgresql+psycopg2://'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{}:{}@{}:{}/{}'.format(username, password, host, port, dbName)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(username, password, host, port, dbName)
+app.config['SQLALCHEMY_DATABASE_URI'] = driver + os.environ[username] + os.environ[password]  + '@' + os.environ[host] + ':' + os.environ[port]  + '/' + os.environ[dbName]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

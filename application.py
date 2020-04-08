@@ -19,7 +19,7 @@ app.config["PORT"] = "5000"
 # we will do it later with the parameters.
 username = 'smtusername'
 password = 'smtpassword'
-host = 'aa77fccri7bpdt.cz4bsejequqa.us-west-2.rds.amazonaws.com' #'aa77fccri7bpdt.cz4bsejequqa.us-west-2.rds.amazonaws.com'
+host = 'smushare.cz4bsejequqa.us-west-2.rds.amazonaws.com' #'aa77fccri7bpdt.cz4bsejequqa.us-west-2.rds.amazonaws.com' 'aa77fccri7bpdt.cz4bsejequqa.us-west-2.rds.amazonaws.com'
 port = 5432
 dbName = 'postgres' #'postgres' - default name given by RDS is postgres
 

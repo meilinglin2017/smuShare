@@ -57,11 +57,12 @@
             <div class='describe'>Here are the files available! Take your pick :)</div>
         </div>
         <div class = 'content animate animated fadeInUp'>
+            {% for material in materials %}
             <div class="blog-card spring-fever">
                 <div class="title-content">
-                    <div class='title'>SMT 203</div>
-                    <div class="intro">Smart City Systems And Management</div>
-                    <div class='filename'>SMT_203_WEEK_5_LAB_4.pdf</div>
+                    <div class='title'>{{ material.course_code }}</div>
+                    <div class="intro">{{ material.course_name }}</div>
+                    <div class='filename'>{{ material.file_name }}</div>
                 </div><!-- /.title-content -->
                 <div class="utility-info">
                     <ul class="utility-list">
@@ -69,7 +70,7 @@
                         <i class="fas fa-star"></i>12
                     </li>
                     <li class="date">
-                        <i class="fas fa-calendar-plus"></i>03.12.2015
+                        <i class="fas fa-calendar-plus"></i>{{ material.upload_date }}
                     </li>
                     <li class='arrow'>                
                         <a href='{{ common.base }}detail/1' style='width: 170%;' class="fas fa-arrow-alt-circle-right fa-lg card-link"></a>
@@ -80,98 +81,102 @@
                 <div class="gradient-overlay"></div>
                 <div class="color-overlay"></div>
             </div><!-- /.blog-card -->
-            <div class="blog-card spring-fever">
-                <div class="title-content">
-                    <div class='title'>SMT 203</div>
-                    <div class="intro">Smart City Systems And Management</div>
-                    <div class='filename'>SMT_203_WEEK_5_LAB_4.pdf</div>
-                </div><!-- /.title-content -->
-                <div class="utility-info">
-                    <ul class="utility-list">
-                    <li class="comments">
-                        <i class="fas fa-star"></i>12
-                    </li>
-                    <li class="date">
-                        <i class="fas fa-calendar-plus"></i>03.12.2015
-                    </li>
-                    <li class='arrow'>                
-                        <a href='#' style='width: 170%;' class="fas fa-arrow-alt-circle-right fa-lg card-link"></a>
-                    </li>
-                    </ul>
-                </div><!-- /.utility-info -->
-                <!-- overlays -->
-                <div class="gradient-overlay"></div>
-                <div class="color-overlay"></div>
-            </div><!-- /.blog-card -->
-            <div class="blog-card spring-fever">
-                <div class="title-content">
-                    <div class='title'>SMT 203</div>
-                    <div class="intro">Smart City Systems And Management</div>
-                    <div class='filename'>SMT_203_WEEK_5_LAB_4.pdf</div>
-                </div><!-- /.title-content -->
-                <div class="utility-info">
-                    <ul class="utility-list">
-                    <li class="comments">
-                        <i class="fas fa-star"></i>12
-                    </li>
-                    <li class="date">
-                        <i class="fas fa-calendar-plus"></i>03.12.2015
-                    </li>
-                    <li class='arrow'>                
-                        <a href='#' style='width: 170%;' class="fas fa-arrow-alt-circle-right fa-lg card-link"></a>
-                    </li>
-                    </ul>
-                </div><!-- /.utility-info -->
-                <!-- overlays -->
-                <div class="gradient-overlay"></div>
-                <div class="color-overlay"></div>
-            </div><!-- /.blog-card -->
-            <div class="blog-card spring-fever">
-                <div class="title-content">
-                    <div class='title'>SMT 203</div>
-                    <div class="intro">Smart City Systems And Management</div>
-                    <div class='filename'>SMT_203_WEEK_5_LAB_4.pdf</div>
-                </div><!-- /.title-content -->
-                <div class="utility-info">
-                    <ul class="utility-list">
-                    <li class="comments">
-                        <i class="fas fa-star"></i>12
-                    </li>
-                    <li class="date">
-                        <i class="fas fa-calendar-plus"></i>03.12.2015
-                    </li>
-                    <li class='arrow'>                
-                        <a href='#' style='width: 170%;' class="fas fa-arrow-alt-circle-right fa-lg card-link"></a>
-                    </li>
-                    </ul>
-                </div><!-- /.utility-info -->
-                <!-- overlays -->
-                <div class="gradient-overlay"></div>
-                <div class="color-overlay"></div>
-            </div><!-- /.blog-card -->
-            <div class="blog-card spring-fever">
-                <div class="title-content">
-                    <div class='title'>SMT 203</div>
-                    <div class="intro">Smart City Systems And Management</div>
-                    <div class='filename'>SMT_203_WEEK_5_LAB_4.pdf</div>
-                </div><!-- /.title-content -->
-                <div class="utility-info">
-                    <ul class="utility-list">
-                    <li class="comments">
-                        <i class="fas fa-star"></i>12
-                    </li>
-                    <li class="date">
-                        <i class="fas fa-calendar-plus"></i>03.12.2015
-                    </li>
-                    <li class='arrow'>                
-                        <a href='#' style='width: 170%;' class="fas fa-arrow-alt-circle-right fa-lg card-link"></a>
-                    </li>
-                    </ul>
-                </div><!-- /.utility-info -->
-                <!-- overlays -->
-                <div class="gradient-overlay"></div>
-                <div class="color-overlay"></div>
-            </div><!-- /.blog-card -->
+            {% endfor %}
+            <script>
+
+                // <div class="blog-card spring-fever">
+                //     <div class="title-content">
+                //         <div class='title'>SMT 203</div>
+                //         <div class="intro">Smart City Systems And Management</div>
+                //         <div class='filename'>SMT_203_WEEK_5_LAB_4.pdf</div>
+                //     </div><!-- /.title-content -->
+                //     <div class="utility-info">
+                //         <ul class="utility-list">
+                //         <li class="comments">
+                //             <i class="fas fa-star"></i>12
+                //         </li>
+                //         <li class="date">
+                //             <i class="fas fa-calendar-plus"></i>03.12.2015
+                //         </li>
+                //         <li class='arrow'>                
+                //             <a href='#' style='width: 170%;' class="fas fa-arrow-alt-circle-right fa-lg card-link"></a>
+                //         </li>
+                //         </ul>
+                //     </div><!-- /.utility-info -->
+                //     <!-- overlays -->
+                //     <div class="gradient-overlay"></div>
+                //     <div class="color-overlay"></div>
+                // </div><!-- /.blog-card -->
+                // <div class="blog-card spring-fever">
+                //     <div class="title-content">
+                //         <div class='title'>SMT 203</div>
+                //         <div class="intro">Smart City Systems And Management</div>
+                //         <div class='filename'>SMT_203_WEEK_5_LAB_4.pdf</div>
+                //     </div><!-- /.title-content -->
+                //     <div class="utility-info">
+                //         <ul class="utility-list">
+                //         <li class="comments">
+                //             <i class="fas fa-star"></i>12
+                //         </li>
+                //         <li class="date">
+                //             <i class="fas fa-calendar-plus"></i>03.12.2015
+                //         </li>
+                //         <li class='arrow'>                
+                //             <a href='#' style='width: 170%;' class="fas fa-arrow-alt-circle-right fa-lg card-link"></a>
+                //         </li>
+                //         </ul>
+                //     </div><!-- /.utility-info -->
+                //     <!-- overlays -->
+                //     <div class="gradient-overlay"></div>
+                //     <div class="color-overlay"></div>
+                // </div><!-- /.blog-card -->
+                // <div class="blog-card spring-fever">
+                //     <div class="title-content">
+                //         <div class='title'>SMT 203</div>
+                //         <div class="intro">Smart City Systems And Management</div>
+                //         <div class='filename'>SMT_203_WEEK_5_LAB_4.pdf</div>
+                //     </div><!-- /.title-content -->
+                //     <div class="utility-info">
+                //         <ul class="utility-list">
+                //         <li class="comments">
+                //             <i class="fas fa-star"></i>12
+                //         </li>
+                //         <li class="date">
+                //             <i class="fas fa-calendar-plus"></i>03.12.2015
+                //         </li>
+                //         <li class='arrow'>                
+                //             <a href='#' style='width: 170%;' class="fas fa-arrow-alt-circle-right fa-lg card-link"></a>
+                //         </li>
+                //         </ul>
+                //     </div><!-- /.utility-info -->
+                //     <!-- overlays -->
+                //     <div class="gradient-overlay"></div>
+                //     <div class="color-overlay"></div>
+                // </div><!-- /.blog-card -->
+                // <div class="blog-card spring-fever">
+                //     <div class="title-content">
+                //         <div class='title'>SMT 203</div>
+                //         <div class="intro">Smart City Systems And Management</div>
+                //         <div class='filename'>SMT_203_WEEK_5_LAB_4.pdf</div>
+                //     </div><!-- /.title-content -->
+                //     <div class="utility-info">
+                //         <ul class="utility-list">
+                //         <li class="comments">
+                //             <i class="fas fa-star"></i>12
+                //         </li>
+                //         <li class="date">
+                //             <i class="fas fa-calendar-plus"></i>03.12.2015
+                //         </li>
+                //         <li class='arrow'>                
+                //             <a href='#' style='width: 170%;' class="fas fa-arrow-alt-circle-right fa-lg card-link"></a>
+                //         </li>
+                //         </ul>
+                //     </div><!-- /.utility-info -->
+                //     <!-- overlays -->
+                //     <div class="gradient-overlay"></div>
+                //     <div class="color-overlay"></div>
+                // </div><!-- /.blog-card -->
+            </script>
         </div>
         <script type='text/javascript' src="{{ url_for('static', filename='js/main.js') }}"></script>
     </body>

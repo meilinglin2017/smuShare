@@ -64,6 +64,7 @@ class Material(db.Model):
             'file_name' : self.file_name,
             'file_path' : self.file_path,
             'upload_date' : self.upload_date.strftime('%Y-%m-%d'),
+            'rating_avg' : self.getRatingAvg(),
             'reviews' : [{
                 'review_id' : r.review_id,
                 'rating' : r.rating,
@@ -72,6 +73,12 @@ class Material(db.Model):
             } for r in self.file_reviews],
             'download_user' : [u.user_id for u in self.dl_user]
         }
+
+    def getRatingAvg(self):
+        total = 0
+        for review in self.file_reviews:
+            total += review.rating
+        return total/len(self.file_reviews)
 
 # Review Info db table
 class Review(db.Model):

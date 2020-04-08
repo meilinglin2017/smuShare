@@ -23,6 +23,7 @@
         <img class='mainbg animate animated fadeInLeft' src="{{ url_for('static', filename='img/mainbg.png') }}">
         <div class = 'container animate animated fadeInDown slow-2s'>
             <nav>
+                
                 <input type= 'checkbox' id = 'nav' class='hidden'>
                 <label for='nav' class='nav-btn'>
                     <i></i>
@@ -37,7 +38,10 @@
                 <div class='nav-wrapper'>
                     <ul>
                         <li>
-                            <input class="search__input" type="text" placeholder="Search">
+                            <form>
+                                <input class="search__input" type="text" placeholder="Search">
+                            </form>
+                            
                         </li>
                         <li><a href='{{ common.base }}upload/' class='fas fa-upload link'></a></li>
                         <li><a href='#' class='fas fa-comments link'></a></li>

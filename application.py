@@ -37,7 +37,7 @@ from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
 # base_url = "http://localhost:5000/"
-base_url = "http://smushare.us-west-2.elasticbeanstalk.com/"
+base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -322,12 +322,12 @@ def uploading():
     if set(('prof_name', 'course_code', 'course_name', 'course_term',
             'input_file', 'user_id', 'course_id', 'prof_id')) <= set(request.json):
         error_msg.append("Some fields are empty")
-        return render_template('upload-new.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
+        return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
     
     input_file = request.files['input_file']
     if input_file.filename == '':
         error_msg.append("No file is selected")
-        return render_template('upload-new.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
+        return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
 
     # file_name = request.json['file_name']
     # prof_name = request.json['prof_name']
@@ -381,7 +381,7 @@ def upload_page():
     for course in courses:
         courseDict[course.course_code] = course.course_name
 
-    return render_template('upload-new.html', common = common_var, profList = profList, courseDict = courseDict)
+    return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict)
 
 @app.route("/download/<int:file_id>/")
 def download_page(file_id):

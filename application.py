@@ -106,12 +106,6 @@ def allowed_file(filename):
 # User Methods
 @app.route("/searchFile/", methods = ['GET'])
 def searchFile():
-    conditions = {}
-    attributes = ['file_name', 'prof_name', 'course_name', 'course_code']
-    for attr in attributes:
-        if attr in request.args:
-            conditions[attr] = request.args.get(attr)
-
     materials = Material.query.filter()
     if 'file_name' in request.args:
         materials = materials.filter(Material.file_name == request.args.get('file_name'))
@@ -261,6 +255,33 @@ def deleteReview():
 """
 These routes will call the api and redirect to frontend
 """
+@app.route("/search/")
+def searchbar():
+    search_input = request.args.get('search')
+    materials = Material.query.filter()
+
+    materials = materials.filter(Material.file_name == search_input)
+    if materials != []:
+        return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
+    materials = Material.query.filter()
+
+    materials = materials.filter(Material.prof_name == search_input)
+    if materials != []:
+        return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
+    materials = Material.query.filter()
+
+    materials = materials.filter(Material.course_name == search_input)
+    if materials != []:
+        return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
+    materials = Material.query.filter()
+
+    materials = materials.filter(Material.course_code == search_input)
+    if materials != []:
+        return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
+    materials = Material.query.filter()
+
+    return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
+
 @app.route("/authenticate/<form_action>/", methods = ['POST'])
 def check_user(form_action):
     error_msg = []

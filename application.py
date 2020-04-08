@@ -189,19 +189,23 @@ def getRatingAvg(reviews):
 
 @app.route("/uploadReview/", methods = ['POST'])
 def uploadReview():
-    empty_fields = ', '.join([field for field in ['file_id', 'review', 'rating'] if field not in request.json])
+    empty_fields = ', '.join([field for field in ['file_id', 'user_id', 'review', 'rating'] if field not in request.json])
     if empty_fields != '':
         return jsonify('Parameter(s) {} not found'.format(empty_fields)), 400
 
     file_id = request.json['file_id']
+    user_id = request.json['user_id']
     review = request.json['review']
     rating = request.json['rating']
 
     try:
-        filez = Material.query.filter_by(id=file_id).first()
+        filez = Material.query.filter_by(file_id=file_id).first()
         if filez is None:
             return ('{} does not exist'.format(filez))
-        new_review = Review(rating=rating, review=review, file_id=file_id)
+        user = User.query.get(user_id)
+        if user is None:
+            return ('{} does not exist'.format(user))
+        new_review = Review(rating=rating, review=review, file_id=file_id, user_id=user_id)
         db.session.add(new_review)
         db.session.commit()
 
@@ -376,20 +380,25 @@ def uploading():
     params['course_id'] = course.course_id
     params['user_id'] = common_var['session_user'].user_id
 
-    req = requests.post(common_var['base'] + 'uploadFile/', params = params)
+    req = requests.post(common_var['base'] + 'uploadFile/', json = params)
     return req.text
 
 @app.route("/reviewing/<int:file_id>/", methods = ["POST"])
 def reviewing(file_id):
+    if 'session_user' not in common_var:
+        return redirect(common_var['base'] + "login/")
+
     rating = request.form['radio-star']
     review = request.form['review']
+    user_id = common_var['session_user'].user_id
 
     params = {
         "file_id" : file_id,
+        "user_id" : user_id,
         "review" : review,
         "rating" : rating
     }
-    req = request.post(common_var['base'] + "uploadReview/", params = params)
+    req = requests.post(common_var['base'] + "uploadReview/", json = params)
     return req.text
 
 ### FrontEnd Routes ###
@@ -449,7 +458,7 @@ def review_file(file_id):
     material = Material.query.get(file_id)
     if Material is None:
         return redirect(common_var['base'] + 'home')
-    return render_template('reviewform.html', common = common_var, material = material)
+    return render_template('reviewform.html', common = common_var, material = material.serialize())
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -63,9 +63,9 @@ class Material(db.Model):
             'course_term' : self.course_term,
             'file_name' : self.file_name,
             'file_path' : self.file_path,
-            'upload_date' : self.upload_date,
+            'upload_date' : self.upload_date.strftime('%Y-%m-%d'),
             'reviews' : [{
-                'review_id' : r.rating_ID,
+                'review_id' : r.review_id,
                 'rating' : r.rating,
                 'review' : r.review,
                 'review_date' : r.review_date
@@ -101,7 +101,7 @@ class Review(db.Model):
             'review_id' : self.review_id,
             'rating' : self.rating,
             'review' : self.review,
-            'review_date' : self.review_date
+            'review_date' : self.review_date.strftime('%Y-%m-%d')
         }
 
 # User Info db table

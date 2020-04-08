@@ -112,7 +112,7 @@ def searchFile():
         if attr in request.args:
             conditions[attr] = request.args.get(attr)
     
-    materials = Material.query.filter_by(conditions)
+    materials = Material.query.filter_by(conditions).first()
     return [m.serialize() for m in materials], 200
     
 
@@ -324,8 +324,7 @@ def uploading():
     if 'input_file' not in request.files:
         error_msg.append("No file is selected")
 
-    if set(('prof_name', 'course_code', 'course_name', 'course_term',
-            'input_file', 'user_id', 'course_id', 'prof_id')) > set(request.json):
+    if set(('prof_name', 'course_code', 'course_name', 'course_term')) > set(request.form):
         error_msg.append("Some fields are empty")
         return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
     
@@ -334,14 +333,11 @@ def uploading():
         error_msg.append("No file is selected")
         return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
 
-    # file_name = request.json['file_name']
-    # course_term = request.json['course_term']
+    course_term = request.form['course_term']
 
-    # user_id = request.json['user_id']
-    # course_id = request.json['course_id']
-    # prof_id = request.json['prof_id']
-
-    params = request.form
+    params = {
+        "course_term": course_term
+    }
     # File details
     params['input_file'] = input_file
     params['file_name'] = input_file.filename
@@ -351,8 +347,8 @@ def uploading():
     course_code = request.form['course_code']
     course_name = request.form['course_name']
 
-    prof = Prof.query.filter_by(prof_name = prof_name)
-    course = Course.query.filter_by(course_code = course_code)
+    prof = Prof.query.filter_by(prof_name = prof_name).first()
+    course = Course.query.filter_by(course_code = course_code).first()
 
     if prof is None:
         new_prof = Prof(prof_name = prof_name)

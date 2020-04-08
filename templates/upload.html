@@ -55,11 +55,11 @@
             <div class='describe'>Thank you for contributing to the community!</div>
         </div>
         <div class = 'content animate animated fadeInUp' style="height: 430px;  font-family: Rosario;">
-            <form class="upload-form" action="{{ common.base }}uploading/" method="post">
+            <form class="upload-form" action="{{ common.base }}uploading/" method="post" enctype="multipart/form-data">
                 <h5 style="padding-bottom: 15px;">Please enter the fields below</h5>
                 
                 <label for="course_code">
-                <span>Course Code</span><input type="text" name="course_code" required="true" list="courseCodes" oninput="getCourseName(this.value)"/>
+                <span>Course Code</span><input type="text" name="course_code" required="true" list="courseCodes" oninput="getCourseName(this.value)" placeholder="Eg. SMT203"/>
                 <datalist id="courseCodes">
                     {% for code in courseDict.keys() %}
                         <option value="{{ code }}">
@@ -67,13 +67,13 @@
                 </datalist>
                 </label>
                 <label for="course_name">
-                <span>Course Name</span><input type="text" name="course_name" required="true" id="courseName" />
+                <span>Course Name</span><input type="text" name="course_name" required="true" id="courseName" placeholder="Eg. Smart City System and Management"/>
                 </label>
                 <label for="course_term">
-                    <span>Course Semester</span><input type="text" name="course_term" required="true" />
+                    <span>Course Semester</span><input type="text" name="course_term" required="true" placeholder="Eg. ay1920sem2"/>
                     </label>
                 <label for="prof_name">
-                <span>Professor Name</span><input type="text" name="prof_name" required="true" list="profNames" />
+                <span>Professor Name</span><input type="text" name="prof_name" required="true" list="profNames" placeholder="Eg. Tan Hwee Xian"/>
                 <datalist id="profNames">
                     {% for prof in profList %}
                         <option value="{{ prof }}">
@@ -88,6 +88,13 @@
                 <label>
                     <input type="submit" value="Submit File" />
                 </label>
+                <div style="color: red;">
+                    {% if errors != [] %}
+                        {% for error in errors %}
+                            <strong>*{{ error }}*</strong></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </form>
         </div>
         <script type='text/javascript' src="{{ url_for('static', filename='js/main.js') }}"></script>

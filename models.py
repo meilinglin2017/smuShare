@@ -6,6 +6,9 @@ from application import db
 course_prof_table = db.Table('course_prof',
                             db.Column('course_id', db.ForeignKey('course_info.course_id'), primary_key = True),
                             db.Column('prof_id', db.ForeignKey('prof_info.prof_id'), primary_key = True))
+dl_history_table = db.Table('dl_history',
+                            db.Column('user_id', db.ForeignKey('user_info.user_id'), primary_key = True),
+                            db.Column('file_id', db.ForeignKey('file_info.file_id'), primary_key = True))
 
 # File Info db table (Cannot use File cause is existing python object already)
 class Material(db.Model):
@@ -31,6 +34,8 @@ class Material(db.Model):
     uploader = db.relationship('User', back_populates= 'uploads', lazy = True)
     course = db.relationship('Course', back_populates = 'files', lazy = True)
     professors = db.relationship('Prof', back_populates= 'notes', lazy = True)
+
+    dl_user = db.relationship('User', secondary = dl_history_table, back_populates = 'downloads', lazy = True)
 
     def __init__(self, course_code, course_name, prof_name, course_term, file_name, file_path, user_id, course_id, prof_id):
         self.course_code = course_code
@@ -61,7 +66,8 @@ class Material(db.Model):
                 'rating' : r.rating,
                 'review' : r.review,
                 'review_date' : r.review_date
-            } for r in self.reviews]
+            } for r in self.reviews],
+            'download_user' : [u.user_id for u in self.dl_user]
         }
 
 # Review Info db table
@@ -107,6 +113,7 @@ class User(db.Model):
 
     reviews = db.relationship('Review', back_populates = 'users', uselist = True, lazy = True)
     uploads = db.relationship('Material', back_populates = 'uploader', uselist = True, lazy = True)
+    downloads = db.relationship('Material', secondary = dl_history_table, back_populates = 'dl_user', lazy = True)
 
     def __init__(self, username, password, email):
         self.username = username
@@ -123,7 +130,8 @@ class User(db.Model):
             'username': self.username,
             'password': self.password,
             'reviews': [r.review for r in self.reviews],
-            'uploads': [f.upload for f in self.uploads]
+            'uploads': [f.upload for f in self.uploads],
+            'downloads': [d.file_id for d in self.downloads]
         }
 
 

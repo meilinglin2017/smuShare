@@ -52,10 +52,10 @@
             <div class="word">
                 <span>Review</span>
             </div>
-            <div class='describe'>Liking 123456_SMT203_Cheatsheet.pdf? Leave a review! </div>
+            <div class='describe'>Liking {{ material.file_name }}? Leave a review! </div>
         </div>
         <div class = 'content animate animated fadeInUp' style="height: 430px;  font-family: Rosario;">
-            <form class="upload-form" action="" method="post">
+            <form class="upload-form" action="{{ common.base }}/reviewing/{{ material.file_id }}" method="post">
                 <h5 style="padding-bottom: 15px;">Please fill in the review form below</h5>
                 
                 <label for="field2">
@@ -75,7 +75,7 @@
                     </div>
                 </label>
                 <label for="field3">
-                    <span>Review</span><textarea name="field4" onkeyup="adjust_textarea(this)" required="true"></textarea>
+                    <span>Review</span><textarea name="review" onkeyup="adjust_textarea(this)" required="true"></textarea>
                 </label>
                 <label>
                 <span> </span><input type="submit" value="Submit Review" />

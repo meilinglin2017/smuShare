@@ -82,11 +82,9 @@ common_var = {
 #     course_term = "AY19/20S2",
 #     file_name = "Juicy Cheatsheet",
 #     file_path = "sample_path",
-#     rating_avg = 5.0,
 #     user_id = sample_user.user_id,
 #     course_id = sample_course_code.course_id,
-#     prof_id = sample_prof.prof_id,
-#     reviews = []
+#     prof_id = sample_prof.prof_id
 # )
 
 
@@ -126,12 +124,6 @@ def getReviews():
     reviews = Review.query.all()
     return jsonify([r.serialize() for r in reviews]), 200
 
-# We do not need to have an uploadFile already because
-# we have /upload/ that receive both POST and GET. That is
-# done on the front-end and back-end instead of 
-# back-end only.
-
-# In case need to reference for /upload/
 @app.route("/uploadFile/", methods = ['POST'])
 def uploadFile():
     try:
@@ -321,6 +313,10 @@ def uploading():
         courseDict[course.course_code] = course.course_name
     
     error_msg = []
+
+    if 'session_user' not in common_var:
+        error_msg.append("Login to upload files!")
+
     if 'input_file' not in request.files:
         error_msg.append("No file is selected")
 
@@ -367,8 +363,22 @@ def uploading():
 
     params['prof_id'] = prof.prof_id
     params['course_id'] = course.course_id
+    params['user_id'] = common_var['session_user'].user_id
 
     req = requests.post(common_var['base'] + 'uploadFile/', params = params)
+    return req.text
+
+@app.route("/reviewing/<int:file_id>/", methods = ["POST"])
+def reviewing(file_id):
+    rating = request.form['radio-star']
+    review = request.form['review']
+
+    params = {
+        "file_id" : file_id,
+        "review" : review,
+        "rating" : rating
+    }
+    req = request.post(common_var['base'] + "uploadReview/", params = params)
     return req.text
 
 ### FrontEnd Routes ###
@@ -395,7 +405,7 @@ def home():
 def detail(file_id):
     material = Material.query.get(file_id)
     if material is None:
-        return render_template('main.html', common = common_var)
+        return redirect(common_var['base'] + 'home')
     return render_template('detail.html', common = common_var, material = material.serialize())
 
 @app.route("/upload/")
@@ -412,8 +422,28 @@ def upload_page():
 def download_page(file_id):
     material = Material.query.get(file_id)
     if material is None:
-        return render_template('main.html', common = common_var)
+        return redirect(common_var['base'] + 'home')
     return render_template('download.html', common = common_var, material = material.serialize())
+
+@app.route("/review/list/<int:user_id>/")
+def review_list(user_id):
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect(common_var['base'] + 'home')
+
+    dl_files = []
+    for file_id in user.downloads:
+        material = Material.query.get(file_id)
+        dl_files.append(material)
+    
+    return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in dl_files])
+
+@app.route("/review/<int:file_id>/")
+def review_file(file_id):
+    material = Material.query.get(file_id)
+    if Material is None:
+        return redirect(common_var['base'] + 'home')
+    return render_template('reviewform.html', common = common_var, material = material)
 
 if __name__ == '__main__':
     app.run(debug=True)

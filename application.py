@@ -372,8 +372,8 @@ def detail(file_id):
         return render_template('main.html', common = common_var)
     return render_template('detail.html', common = common_var, material = material.serialize())
 
-@app.route("/upload/", methods=["GET","POST"])
-def upload():
+@app.route("/upload/")
+def uploadpage():
     profList = [p.prof_name for p in Prof.query.all()]
     courseDict = {}
     courses = Course.query.all()
@@ -383,7 +383,7 @@ def upload():
     return render_template('upload-new.html', common = common_var, profList = profList, courseDict = courseDict)
 
 @app.route("/download/<int:file_id>/")
-def download(file_id):
+def downloadpage(file_id):
     material = Material.query.get(file_id)
     if material is None:
         return render_template('main.html', common = common_var)

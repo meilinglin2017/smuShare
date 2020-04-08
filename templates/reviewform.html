@@ -55,7 +55,7 @@
             <div class='describe'>Liking {{ material.file_name }}? Leave a review! </div>
         </div>
         <div class = 'content animate animated fadeInUp' style="height: 430px;  font-family: Rosario;">
-            <form class="upload-form" action="{{ common.base }}/reviewing/{{ material.file_id }}" method="post">
+            <form class="upload-form" action="{{ common.base }}reviewing/{{ material.file_id }}/" method="post">
                 <h5 style="padding-bottom: 15px;">Please fill in the review form below</h5>
                 
                 <label for="field2">
@@ -77,18 +77,13 @@
                 <label for="field3">
                     <span>Review</span><textarea name="review" onkeyup="adjust_textarea(this)" required="true"></textarea>
                 </label>
+                
                 <label>
                 <span> </span><input type="submit" value="Submit Review" />
                 </label>
             </form>
         </div>
         <script type='text/javascript' src="{{ url_for('static', filename='js/main.js') }}"></script>
-        <script>
-            
-            function getCourseName(courseCode) {
-                var courseDict = {{ courseDict|tojson }};
-                document.getElementById("courseName").value = courseDict[courseCode]
-            }
-        </script>
+
     </body>
 </html>

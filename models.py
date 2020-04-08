@@ -37,7 +37,7 @@ class Material(db.Model):
 
     dl_user = db.relationship('User', secondary = dl_history_table, back_populates = 'downloads', lazy = True)
 
-    def __init__(self, course_code, course_name, prof_name, course_term, file_name, file_path, user_id, course_id, prof_id):
+    def __init__(self, course_code, course_name, prof_name, course_term, file_name, file_path, user_id, course_id, prof_id, rating_avg=None):
         self.course_code = course_code
         self.course_name = course_name
         self.prof_name = prof_name
@@ -47,6 +47,9 @@ class Material(db.Model):
         self.user_id = user_id
         self.course_id = course_id
         self.prof_id = prof_id
+
+        if rating_avg is None:
+            self.rating_avg = 0
 
     def __repr__(self):
         return "{}_{}".format(self.file_name, self.file_id)
@@ -66,7 +69,7 @@ class Material(db.Model):
                 'rating' : r.rating,
                 'review' : r.review,
                 'review_date' : r.review_date
-            } for r in self.reviews],
+            } for r in self.file_reviews],
             'download_user' : [u.user_id for u in self.dl_user]
         }
 

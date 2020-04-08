@@ -36,8 +36,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-# base_url = "http://localhost:5000/"
-base_url = "http://smushare.ml/"
+base_url = "http://localhost:5000/"
+# base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -82,17 +82,19 @@ common_var = {
 #     course_term = "AY19/20S2",
 #     file_name = "Juicy Cheatsheet",
 #     file_path = "sample_path",
-#     user_id = sample_user.user_id,
-#     course_id = sample_course_code.course_id,
-#     prof_id = sample_prof.prof_id
+#     user_id = 1,
+#     course_id = 1,
+#     prof_id = 1
 # )
 
 
 # db.session.add(sample_course_code)
 # db.session.commit()
-# db.session.add(sample_prof)
-# db.session.commit()
-# db.session.add(sample_material)
+
+# myuser = User.query.get(1)
+# mymaterial = Material.query.get(2)
+# print(myuser, mymaterial)
+# myuser.downloads.append(mymaterial)
 # db.session.commit()
 
 ### Definitions without API Routes ###
@@ -122,7 +124,6 @@ def searchFile():
 
     return jsonify([m.serialize() for m in materials]), 200
     
-
 @app.route("/getReviews/", methods = ['GET'])
 def getReviews():
     if 'file_id' in request.args:
@@ -369,6 +370,7 @@ def uploading():
         course = new_course
     if prof not in course.professors:
         course.professors.append(prof)
+        db.session.commit()
 
     params['prof_id'] = prof.prof_id
     params['course_id'] = course.course_id
@@ -439,13 +441,8 @@ def review_list(user_id):
     user = User.query.get(user_id)
     if user is None:
         return redirect(common_var['base'] + 'home')
-
-    dl_files = []
-    for file_id in user.downloads:
-        material = Material.query.get(file_id)
-        dl_files.append(material)
     
-    return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in dl_files])
+    return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads])
 
 @app.route("/review/<int:file_id>/")
 def review_file(file_id):

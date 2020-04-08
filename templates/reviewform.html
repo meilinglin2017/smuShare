@@ -5,7 +5,7 @@
         
         <!-- Latest compiled and minified CSS -->
         <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
-        <link rel="stylesheet" href="../static/css/style.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
         <!-- jQuery library -->
@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
     </head>
     <body class='main'>
-        <img class='mainbg animate animated fadeInLeft' src="../static/img/review.png" style="width:55%; height:auto; padding-right: 50px;">
+        <img class='mainbg animate animated fadeInLeft' src="{{ url_for('static', filename='img/review.png') }}" style="width:55%; height:auto; padding-right: 50px;">
         <div class = 'container animate animated fadeInDown slow-2s'>
             <nav>
                 <input type= 'checkbox' id = 'nav' class='hidden'>
@@ -32,7 +32,7 @@
                 </label>
                 <div class='logo'>
                     <a href='{{ common.home }}'>
-                        <img alt="Qries" src="../static/img/logo.png" width='100' height='85'>
+                        <img alt="Qries" src="{{ url_for('static', filename='img/logo.png') }}" width='100' height='85'>
                     </a>
                 </div>
                 <div class='nav-wrapper'>

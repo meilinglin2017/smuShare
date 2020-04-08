@@ -36,8 +36,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-# base_url = "http://localhost:5000/"
-base_url = "http://smushare.ml/"
+base_url = "http://localhost:5000/"
+# base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -420,32 +420,48 @@ def login():
 
 @app.route("/home/")
 def home():
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     materials = [m.serialize() for m in Material.query.all()]
-    return render_template('main.html', common = common_var, materials = materials)
+    return render_template('main.html', common = common_var, materials = materials, user_id = user_id)
 
 @app.route("/detail/<int:file_id>/")
 def detail(file_id):
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     material = Material.query.get(file_id)
     if material is None:
         return redirect(common_var['base'] + 'home')
-    return render_template('detail.html', common = common_var, material = material.serialize())
+    return render_template('detail.html', common = common_var, material = material.serialize(), user_id = user_id)
 
 @app.route("/upload/")
 def upload_page():
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     profList = [p.prof_name for p in Prof.query.all()]
     courseDict = {}
     courses = Course.query.all()
     for course in courses:
         courseDict[course.course_code] = course.course_name
 
-    return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict)
+    return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, user_id = user_id)
 
 @app.route("/download/<int:file_id>/")
 def download_page(file_id):
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     material = Material.query.get(file_id)
     if material is None:
         return redirect(common_var['base'] + 'home')
-    return render_template('download.html', common = common_var, material = material.serialize())
+    return render_template('download.html', common = common_var, material = material.serialize(), user_id = user_id)
 
 @app.route("/review/list/<int:user_id>/")
 def review_list(user_id):
@@ -453,14 +469,18 @@ def review_list(user_id):
     if user is None:
         return redirect(common_var['base'] + 'home')
     
-    return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads])
+    return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads], user_id = user.user_id)
 
 @app.route("/review/<int:file_id>/")
 def review_file(file_id):
+    if 'session_user' not in common_var:
+        user_id = 0
+    else:
+        user_id = common_var['session_user'].user_id
     material = Material.query.get(file_id)
     if Material is None:
         return redirect(common_var['base'] + 'home')
-    return render_template('reviewform.html', common = common_var, material = material.serialize())
+    return render_template('reviewform.html', common = common_var, material = material.serialize(), user_id = user_id)
 
 if __name__ == '__main__':
     app.run(debug=True)

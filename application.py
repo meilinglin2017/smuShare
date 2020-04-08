@@ -109,9 +109,18 @@ def searchFile():
     for attr in attributes:
         if attr in request.args:
             conditions[attr] = request.args.get(attr)
-    
-    materials = Material.query.filter_by(conditions).first()
-    return [m.serialize() for m in materials], 200
+
+    materials = Material.query.filter()
+    if 'file_name' in request.args:
+        materials = materials.filter(Material.file_name == request.args.get('file_name'))
+    if 'prof_name' in request.args:
+        materials = materials.filter(Material.prof_name == request.args.get('prof_name'))
+    if 'course_name' in request.args:
+        materials = materials.filter(Material.course_name == request.args.get('course_name'))
+    if 'course_code' in request.args:
+        materials = materials.filter(Material.course_code == request.args.get('course_code'))
+
+    return jsonify([m.serialize() for m in materials]), 200
     
 
 @app.route("/getReviews/", methods = ['GET'])

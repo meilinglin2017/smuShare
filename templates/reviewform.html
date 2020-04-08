@@ -38,7 +38,10 @@
                 <div class='nav-wrapper'>
                     <ul>
                         <li>
-                            <input class="search__input" type="text" placeholder="Search">
+                            <form>
+                                <input class="search__input" type="text" placeholder="Search" name = "search">
+                                <button class="search__submit" type="submit"><i class="fa fa-search"></i></button>
+                            </form>
                         </li>
                         <li><a href='{{ common.base }}upload/' class='fas fa-upload link'></a></li>
                         <li><a href='{{ common.base }}review/list/{{ user_id }}' class='fas fa-comments link'></a></li>

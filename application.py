@@ -258,27 +258,23 @@ These routes will call the api and redirect to frontend
 @app.route("/search/")
 def searchbar():
     search_input = request.args.get('search')
-    materials = Material.query.filter()
 
-    materials = materials.filter(Material.file_name == search_input)
+    materials = Material.query.filter(Material.file_name == search_input)
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
-    materials = Material.query.filter()
 
-    materials = materials.filter(Material.prof_name == search_input)
+    materials = Material.query.filter(Material.prof_name == search_input)
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
-    materials = Material.query.filter()
 
-    materials = materials.filter(Material.course_name == search_input)
+    materials = Material.query.filter(Material.course_name == search_input)
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
-    materials = Material.query.filter()
 
-    materials = materials.filter(Material.course_code == search_input)
+    materials = Material.query.filter(Material.course_code == search_input)
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
-    materials = Material.query.filter()
+    materials = Material.query.filter().all()
 
     return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
 

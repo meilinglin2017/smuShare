@@ -37,8 +37,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-base_url = "http://localhost:5000/"
-# base_url = "http://smushare.ml/"
+# base_url = "http://localhost:5000/"
+base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -447,7 +447,7 @@ def reviewing(file_id):
         db.session.commit()
 
         success_msg = "Review success! You can review more files below."
-        return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads], user_id = user_id success = success_msg)
+        return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads], user_id = user_id, success = success_msg)
     except Exception as e:
         return (str(e)) 
     

@@ -76,7 +76,7 @@ class Material(db.Model):
 
     def getRatingAvg(self):
         if len(self.file_reviews) == 0:
-            return 0
+            return "-"
         total = 0
         for review in self.file_reviews:
             total += review.rating

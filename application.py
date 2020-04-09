@@ -6,6 +6,7 @@ import os
 from s3bucket import s3_upload_file, s3_get_link
 import requests
 import psycopg2
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.debug = True
@@ -108,13 +109,13 @@ def allowed_file(filename):
 def searchFile():
     materials = Material.query.filter()
     if 'file_name' in request.args:
-        materials = materials.filter(Material.file_name.like    (request.args.get('file_name')))
+        materials = materials.filter(func.lower(Material.file_name).like(func.lower(request.args.get('file_name'))))
     if 'prof_name' in request.args:
-        materials = materials.filter(Material.prof_name.like    (request.args.get('prof_name')))
+        materials = materials.filter(func.lower(Material.prof_name).like(func.lower(request.args.get('prof_name'))))
     if 'course_name' in request.args:
-        materials = materials.filter(Material.course_name.like  (request.args.get('course_name')))
+        materials = materials.filter(func.lower(Material.course_name).like(func.lower(request.args.get('course_name'))))
     if 'course_code' in request.args:
-        materials = materials.filter(Material.course_code.like  (request.args.get('course_code')))
+        materials = materials.filter(func.lower(Material.course_code).like(func.lower(request.args.get('course_code'))))
 
     return jsonify([m.serialize() for m in materials]), 200
     
@@ -259,19 +260,19 @@ These routes will call the api and redirect to frontend
 def searchbar():
     search_input = request.args.get('search')
 
-    materials = Material.query.filter(Material.file_name.like(search_input))
+    materials = Material.query.filter(func.lower(Material.file_name).like(func.lower(search_input)))
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
 
-    materials = Material.query.filter(Material.prof_name.like(search_input))
+    materials = Material.query.filter(func.lower(Material.prof_name).like(func.lower(search_input)))
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
 
-    materials = Material.query.filter(Material.course_name.like(search_input))
+    materials = Material.query.filter(func.lower(Material.course_name).like(func.lower(search_input)))
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
 
-    materials = Material.query.filter(Material.course_code.like(search_input))
+    materials = Material.query.filter(func.lower(Material.course_code).like(func.lower(search_input)))
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
     materials = Material.query.filter().all()

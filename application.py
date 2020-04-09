@@ -37,8 +37,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-# base_url = "http://localhost:5000/"
-base_url = "http://smushare.ml/"
+base_url = "http://localhost:5000/"
+# base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -306,6 +306,7 @@ def check_user(form_action):
                 new_user = User(username = username, password = password, email = email)
                 db.session.add(new_user)
                 db.session.commit()
+                return redirect(common_var['base'] + login)
             except Exception as e:
                 return str(e)
     
@@ -467,6 +468,7 @@ def login():
 
 @app.route("/home/")
 def home():
+    print(common_var['curr_user'])
     if 'curr_user' not in common_var:
         user_id = 0
     else:
@@ -514,9 +516,11 @@ def download_page(file_id):
     db.session.commit()
     return render_template('download.html', common = common_var, material = material.serialize(), user_id = user_id)
 
-@app.route("/review/list/<int:user_id>/", defaults = {'user_id':0})
+@app.route("/review/list/", defaults = {'user_id':0})
+@app.route("/review/list/<int:user_id>/")
 def review_list(user_id):
     user = User.query.get(user_id)
+    print(user_id, user)
     if user is None:
         return redirect(common_var['base'] + 'login')
     

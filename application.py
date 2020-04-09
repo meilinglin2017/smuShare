@@ -258,7 +258,7 @@ These routes will call the api and redirect to frontend
 """
 @app.route("/search/")
 def searchbar():
-    search_input = request.args.get('search')
+    search_input = "%{}%".format(request.args.get('search'))
 
     materials = Material.query.filter(func.lower(Material.file_name).like(func.lower(search_input)))
     if materials != []:

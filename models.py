@@ -152,7 +152,7 @@ class Course(db.Model):
     __tablename__ = 'course_info'
 
     course_id = db.Column(db.Integer, primary_key = True)
-    course_code = db.Column(db.String(6), unique = True, nullable = False)
+    course_code = db.Column(db.String(10), unique = True, nullable = False)
     course_name = db.Column(db.String(80), unique = True, nullable = False)
 
     files = db.relationship('Material', back_populates = 'course', uselist = True, lazy = True)

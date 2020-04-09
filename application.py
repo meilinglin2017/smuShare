@@ -260,11 +260,7 @@ These routes will call the api and redirect to frontend
 def searchbar():
     search_input = "%{}%".format(request.args.get('search'))
 
-    materials = Material.query.filter(func.lower(Material.file_name).like(func.lower(search_input)))
-    if materials != []:
-        return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
-
-    materials = Material.query.filter(func.lower(Material.prof_name).like(func.lower(search_input)))
+    materials = Material.query.filter(func.lower(Material.course_code).like(func.lower(search_input)))
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
 
@@ -272,7 +268,11 @@ def searchbar():
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
 
-    materials = Material.query.filter(func.lower(Material.course_code).like(func.lower(search_input)))
+    materials = Material.query.filter(func.lower(Material.prof_name).like(func.lower(search_input)))
+    if materials != []:
+        return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
+
+    materials = Material.query.filter(func.lower(Material.file_name).like(func.lower(search_input)))
     if materials != []:
         return render_template('results.html', common = common_var, materials = [m.serialize() for m in materials])
     materials = Material.query.filter().all()
@@ -509,7 +509,7 @@ def download_page(file_id):
     if material is None:
         return redirect(common_var['base'] + 'home')
 
-    user = Material.query.get(user_id)
+    user = User.query.get(user_id)
     user.downloads.append(material)
     db.session.commit()
     return render_template('download.html', common = common_var, material = material.serialize(), user_id = user_id)

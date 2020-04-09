@@ -37,8 +37,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-base_url = "http://localhost:5000/"
-# base_url = "http://smushare.ml/"
+# base_url = "http://localhost:5000/"
+base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"

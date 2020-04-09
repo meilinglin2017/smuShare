@@ -48,6 +48,11 @@
                     </div>
 
                     <input type='submit' class = 'btn' value = 'Login' style='color: white;'>
+                    <div style="color: #38d39f; font-family: Rosario;">
+                        {% if success != "" %}
+                        <strong>*{{ success }}*</strong>
+                        {% endif %}
+                    </div>
                     <div style="color: red;">
                         {% if errors != [] %}
                             {% for error in errors %}

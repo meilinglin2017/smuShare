@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, redirect
+from flask import Flask, jsonify, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from pprint import pprint
@@ -37,8 +37,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-# base_url = "http://localhost:5000/"
-base_url = "http://smushare.ml/"
+base_url = "http://localhost:5000/"
+# base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -306,7 +306,7 @@ def check_user(form_action):
                 new_user = User(username = username, password = password, email = email)
                 db.session.add(new_user)
                 db.session.commit()
-                return redirect(common_var['base'] + login)
+                return redirect(url_for(login, success = "You can now login with your credentials!"))
             except Exception as e:
                 return str(e)
     
@@ -446,7 +446,8 @@ def reviewing(file_id):
         db.session.add(new_review)
         db.session.commit()
 
-        return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads], user_id = user_id)
+        success_msg = "Review success! You can review more files below."
+        return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads], user_id = user_id success = success_msg)
     except Exception as e:
         return (str(e)) 
     

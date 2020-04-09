@@ -53,7 +53,7 @@
         <div class='detailmaintext'>
             <h3 class="fixed">{{ material.course_code }}</h3>
             <div class="word">
-                <span style='font-size: 30px;'>{{ material.course_name }}</span>
+                <span style='font-size: 30px;animation: none;'>{{ material.course_name }}</span>
                 <p>{{ material.prof_name }}</p>
             </div>
             <div class='describe' style='padding-top: 5px;'>{{ material.file_name }}</div>
@@ -68,7 +68,7 @@
                 </ul>
             </div><!-- /.utility-info -->
             <div class = 'dlcontent' style='margin-left:0px; float: right; margin-top: -15px; margin-right: 20px;'>
-                <span><a href='{{ common.base }}download/{{ material.file_id }}/' class="fas fa-download" style='padding-top: 8px; padding-left: 11px;'></a></span>
+                <span><a href='{{ common.base }}download/{{ material.file_id }}/'  style='padding-top: 8px; padding-left: 11px;'><i class="fas fa-download" style='margin-top: 8 px;'></i></a></span>
             </div>
         </div>
 

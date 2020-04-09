@@ -761,7 +761,7 @@ input[type=submit]{
 }
 
 .word span:nth-child(1).active {
-	/* animation: balance 1.5s ease-out; */
+	animation: balance 1.5s ease-out;
 	transform-origin: bottom left;
 }
 
@@ -778,7 +778,7 @@ input[type=submit]{
 }
 
 .word span:nth-child(2).active {
-	/* animation: shrinkjump 1s ease-in-out; */
+	animation: shrinkjump 1s ease-in-out;
 	transform-origin: bottom center;
 }
 
@@ -799,7 +799,7 @@ input[type=submit]{
 }
 
 .word span:nth-child(3).active {
-	/* animation: falling 2s ease-out; */
+	animation: falling 2s ease-out;
 	transform-origin: bottom center;
 }
 
@@ -831,7 +831,7 @@ input[type=submit]{
 }
 
 .word span:nth-child(4).active {
-	/* animation: rotate 1s ease-out; */
+	animation: rotate 1s ease-out;
 }
 
 @keyframes rotate {
@@ -846,7 +846,7 @@ input[type=submit]{
 }
 
 .word span:nth-child(5).active {
-	/* animation: toplong 1.5s linear; */
+	animation: toplong 1.5s linear;
 }
 
 @keyframes toplong {
@@ -861,15 +861,15 @@ input[type=submit]{
 }
 
 .word span:nth-child(6).active {
-	/* animation: balance 1.5s linear; */
+	animation: balance 1.5s linear;
 }
 
 .word span:nth-child(7).active {
-	/* animation: shrinkjump 1.5s linear; */
+	animation: shrinkjump 1.5s linear;
 }
 
 .word span:nth-child(8).active {
-	/* animation: falling 1.5s linear; */
+	animation: falling 1.5s linear;
 }
 
 .fixed {
@@ -932,11 +932,13 @@ input[type=submit]{
 .search__submit{
     border: 1px solid transparent;
     background-color: transparent;
+    outline: none;
 }
 
 .search__submit:hover{
     color:#38d39f;
     background-color: transparent;
+    outline: none;
 }
 
 .comment{

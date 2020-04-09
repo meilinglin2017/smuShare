@@ -480,6 +480,7 @@ nav ul li a{
     margin-top: 70px;
     margin-left: 650px;
     padding: 5px 0 0 40px;
+    overflow:scroll;
 }
 
 .detailmaintext{

@@ -540,5 +540,11 @@ def review_file(file_id):
         return redirect(common_var['base'] + 'home')
     return render_template('reviewform.html', common = common_var, material = material.serialize(), user_id = user_id)
 
+@app.route("/logout/")
+def logout():
+    if 'curr_user' in common_var:
+        common_var['curr_user'] = None
+    return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.run(debug=True)

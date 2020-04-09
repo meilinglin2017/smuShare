@@ -306,7 +306,8 @@ def check_user(form_action):
                 new_user = User(username = username, password = password, email = email)
                 db.session.add(new_user)
                 db.session.commit()
-                return redirect(url_for(login, success = "You can now login with your credentials!"))
+                print(common_var, auth_url)
+                return render_template('login.html', common = common_var, auth_url = auth_url, success = "*You can now login with your credentials!*")
             except Exception as e:
                 return str(e)
     
@@ -348,10 +349,11 @@ def uploading():
     error_msg = []
 
     if 'curr_user' not in common_var:
-        error_msg.append("Login to upload files!")
-
+        return redirect(url_for('login'))
+        
     if 'input_file' not in request.files:
         error_msg.append("No file is selected")
+        return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
 
     if set(('prof_name', 'course_code', 'course_name', 'course_term')) > set(request.form):
         error_msg.append("Some fields are empty")
@@ -421,10 +423,11 @@ def uploading():
         os.remove(s3_filename)
 
         # req = requests.post(common_var['base'] + 'uploadFile/', json = params, files = datum)
-        success_msg = "Congratulations! Your file had been uploaded. Feel free to upload another one!"
+        success_msg = "*Congratulations! Your file had been uploaded. Feel free to upload another one!*"
         return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, user_id = user_id, success = success_msg)
     except Exception as e:
-        return str(e)
+        error_msg.append("file is too big")
+        return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, user_id = user_id, errors = error_msg)
 
 @app.route("/reviewing/<int:file_id>/", methods = ["POST"])
 def reviewing(file_id):
@@ -446,12 +449,11 @@ def reviewing(file_id):
         db.session.add(new_review)
         db.session.commit()
 
-        success_msg = "Review success! You can review more files below."
+        success_msg = "*Review success! You can review more files below.*"
         return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads], user_id = user_id, success = success_msg)
     except Exception as e:
         return (str(e)) 
     
-
 ### FrontEnd Routes ###
 @app.route("/")
 def welcome():
@@ -537,6 +539,12 @@ def review_file(file_id):
     if Material is None:
         return redirect(common_var['base'] + 'home')
     return render_template('reviewform.html', common = common_var, material = material.serialize(), user_id = user_id)
+
+@app.route("/logout/")
+def logout():
+    if 'curr_user' in common_var:
+        common_var['curr_user'] = None
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

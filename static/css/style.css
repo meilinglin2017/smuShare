@@ -695,10 +695,11 @@ input[type=submit]{
     word-wrap: break-word;
     margin-top: 12px;
     color: #ffffff;
-    font-family: 'Droid Serif', serif;
-    font-size: 13px;
-    font-style: italic;
+    font-family: Rosario;
+    font-size: 15px;
+    font-style: normal;
     line-height: 18px;
+    font-weight: bolder;
 }
 
 .card-link{

@@ -509,7 +509,7 @@ def download_page(file_id):
     if material is None:
         return redirect(common_var['base'] + 'home')
 
-    user = Material.query.get(user_id)
+    user = User.query.get(user_id)
     user.downloads.append(material)
     db.session.commit()
     return render_template('download.html', common = common_var, material = material.serialize(), user_id = user_id)

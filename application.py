@@ -306,7 +306,7 @@ def check_user(form_action):
                 new_user = User(username = username, password = password, email = email)
                 db.session.add(new_user)
                 db.session.commit()
-                print(common_var, auth_url)
+                auth_url = common_var['base'] + "authenticate/login/"
                 return render_template('login.html', common = common_var, auth_url = auth_url, success = "*You can now login with your credentials!*")
             except Exception as e:
                 return str(e)

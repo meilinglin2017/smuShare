@@ -80,7 +80,7 @@ class Material(db.Model):
         total = 0
         for review in self.file_reviews:
             total += review.rating
-        return total/len(self.file_reviews)
+        return round(total/len(self.file_reviews), 2)
 
 # Review Info db table
 class Review(db.Model):

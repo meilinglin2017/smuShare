@@ -518,7 +518,7 @@ def download_page(file_id):
 def review_list(user_id):
     user = User.query.get(user_id)
     if user is None:
-        return redirect(common_var['base'] + 'home')
+        return redirect(common_var['base'] + 'login')
     
     return render_template('reviewlist.html', common = common_var, downloads = [m.serialize() for m in user.downloads], user_id = user.user_id)
 

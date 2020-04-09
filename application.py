@@ -37,8 +37,8 @@ db = SQLAlchemy(app)
 from models import Material, Review, User, Course, Prof
 
 ### Common Variables used in multiple pages ###
-base_url = "http://localhost:5000/"
-# base_url = "http://smushare.ml/"
+# base_url = "http://localhost:5000/"
+base_url = "http://smushare.ml/"
 common_var = {
     "base" : base_url,
     "home" : base_url + "home"
@@ -349,10 +349,11 @@ def uploading():
     error_msg = []
 
     if 'curr_user' not in common_var:
-        error_msg.append("Login to upload files!")
-
+        return redirect(url_for('login'))
+        
     if 'input_file' not in request.files:
         error_msg.append("No file is selected")
+        return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, errors = error_msg)
 
     if set(('prof_name', 'course_code', 'course_name', 'course_term')) > set(request.form):
         error_msg.append("Some fields are empty")
@@ -425,6 +426,7 @@ def uploading():
         success_msg = "*Congratulations! Your file had been uploaded. Feel free to upload another one!*"
         return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, user_id = user_id, success = success_msg)
     except Exception as e:
+        error_msg.append("file is too big")
         return render_template('upload.html', common = common_var, profList = profList, courseDict = courseDict, user_id = user_id, errors = error_msg)
 
 @app.route("/reviewing/<int:file_id>/", methods = ["POST"])
@@ -452,7 +454,6 @@ def reviewing(file_id):
     except Exception as e:
         return (str(e)) 
     
-
 ### FrontEnd Routes ###
 @app.route("/")
 def welcome():

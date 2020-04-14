@@ -69,7 +69,7 @@ class Material(db.Model):
                 'review_id' : r.review_id,
                 'rating' : r.rating,
                 'review' : r.review,
-                'review_date' : r.review_date
+                'review_date' : r.review_date.strftime('%Y-%m-%d %H:%M')
             } for r in self.file_reviews],
             'download_user' : [u.user_id for u in self.dl_user]
         }
@@ -110,7 +110,7 @@ class Review(db.Model):
             'review_id' : self.review_id,
             'rating' : self.rating,
             'review' : self.review,
-            'review_date' : self.review_date.strftime('%Y-%m-%d')
+            'review_date' : self.review_date.strftime('%Y-%m-%d %H:%M')
         }
 
 # User Info db table
